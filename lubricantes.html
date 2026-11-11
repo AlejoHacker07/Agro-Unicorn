@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Categoría | Agro UNICORN</title>
+  <link rel="preconnect" href="https://unicorn.com.co">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="estilo.css?v=13">
+  <script>try{if(localStorage.getItem('modo-oscuro')==='activado')document.documentElement.classList.add('dark-mode')}catch(e){}</script>
+</head>
+<body>
+
+  <header class="site-header glass">
+    <a class="brand" href="UNICORN.html"><img src="https://agro.unicorn.com.co/web/image/16724/20200424%20auls_planobordeazul_v1.png" alt=""><span>AGRO UNICORN</span></a>
+    <nav class="nav" aria-label="Principal">
+      <a href="productos.html" id="navProd">Productos</a>
+      <a href="piezas-accesorios.html" id="navPz">Piezas y accesorios</a>
+    </nav>
+    <div class="header-actions">
+      <button class="search-pill" data-open-search><i data-i="search"></i> Buscar <kbd>/</kbd></button>
+      <button class="icon-btn theme-btn" aria-label="Modo oscuro"></button>
+      <button class="icon-btn cart-btn cart-target" data-open-cart aria-label="Carrito"><i data-i="cart"></i><span class="badge cart-badge">0</span></button>
+    </div>
+  </header>
+
+  <nav class="tabbar glass" aria-label="Principal (celular)">
+    <a href="UNICORN.html"><i data-i="home"></i>Inicio</a>
+    <a href="productos.html"><i data-i="grid"></i>Productos</a>
+    <a href="piezas-accesorios.html"><i data-i="wrench"></i>Piezas</a>
+    <button data-open-search><i data-i="search"></i>Buscar</button>
+    <button class="cart-target" data-open-cart><i data-i="cart"></i>Carrito<span class="badge cart-badge">0</span></button>
+  </nav>
+
+  <main class="wrap">
+    <section class="cat-hero">
+      <a class="btn btn-ghost btn-back reveal" href="productos.html" id="back"><i data-i="left"></i> Volver a categorías</a><br>
+      <span class="eyebrow reveal" id="catEyebrow">Categoría</span>
+      <h1 class="h-section reveal" id="catTitle" style="--i:1">Campo y Jardín</h1>
+      <p class="lead reveal" id="catLead" style="--i:2"></p>
+      <span class="cat-current reveal" id="catCurrent" style="--i:3"></span>
+      <div class="eq-bar glass reveal" id="eqBar" style="--i:4"></div>
+      <span class="cat-deco" id="catDeco" aria-hidden="true"></span>
+    </section>
+    <details class="guia glass" id="guia" hidden><summary></summary><div class="guia-body" id="guiaBody"></div></details>
+    <div class="type-chips" id="typeChips" role="group" aria-label="Tipo de producto"></div>
+
+    <!-- 16. Barra de herramientas con fichas de filtros -->
+    <div class="toolbar glass">
+      <span class="count" id="count" aria-live="polite">—</span>
+      <label class="sr-only" for="q">Buscar en esta categoría</label>
+      <input class="select search-in" id="q" type="search" placeholder="Buscar aquí…" autocomplete="off">
+      <div class="seg view-seg" role="group" aria-label="Vista"><button type="button" id="vGrid" aria-pressed="true" aria-label="Cuadrícula">▦</button><button type="button" id="vList" aria-pressed="false" aria-label="Lista">☰</button></div>
+      <button class="btn btn-ghost" id="openFilters" style="min-height:40px; padding:0 16px"><i data-i="sliders"></i> Filtros <span id="nFilters"></span></button>
+      <label class="sr-only" for="sort">Ordenar</label>
+      <select class="select" id="sort">
+        <option value="">Relevancia</option>
+        <option value="asc">Precio: menor a mayor</option>
+        <option value="desc">Precio: mayor a menor</option>
+        <option value="dto">Mayor descuento</option>
+        <option value="az">Nombre: A – Z</option>
+      </select>
+      <label class="sr-only" for="perPage">Productos por página</label>
+      <select class="select" id="perPage">
+        <option value="12">Mostrar 12</option>
+        <option value="24">Mostrar 24</option>
+        <option value="48">Mostrar 48</option>
+      </select>
+      <div class="filter-chips" id="chips"></div>
+    </div>
+
+    <div class="grid-products" id="grid"></div>
+    <p class="empty" id="empty" hidden>No hay productos con esos filtros.</p>
+    <form class="aviso espera glass" id="espera" data-aviso="construccion" hidden><b>Avísame cuando lleguen</b><small>Déjanos tu correo o WhatsApp y te avisamos cuando haya productos de Construcción.</small><div><input type="text" inputmode="email" placeholder="correo@ejemplo.com o 300 123 4567" aria-label="Correo o WhatsApp"><button class="btn btn-primary" type="submit">Avísame</button></div><small class="aviso-msg" role="status"></small></form>
+    <div class="more"><button class="btn btn-ghost" id="more" hidden>Cargar más productos</button></div>
+  </main>
+
+  <!-- 16. Hoja de filtros (abajo en celular, a un lado en computador) -->
+  <aside class="filters-sheet glass" id="filters" aria-label="Filtros">
+    <span class="grabber" aria-hidden="true"></span>
+    <div class="drawer-head"><h2>Filtros</h2><button class="icon-btn" id="closeFilters" aria-label="Cerrar filtros"><i data-i="x"></i></button></div>
+    <div class="filters-body" id="filtersBody"></div>
+    <div class="drawer-foot" style="grid-template-columns:1fr 1.4fr">
+      <button class="btn btn-ghost" id="clear">Limpiar</button>
+      <button class="btn btn-primary" id="apply">Ver productos</button>
+    </div>
+  </aside>
+
+  <div class="cmp-bar glass" id="cmpBar" hidden><span id="cmpN"></span><button class="btn btn-primary" id="cmpGo">Comparar</button><button class="link" id="cmpClear">Vaciar</button></div>
+  <div class="cmp-modal" id="cmpModal" hidden role="dialog" aria-modal="true" aria-label="Comparar productos"><div class="cmp-box glass"><button class="icon-btn cmp-x" id="cmpX" aria-label="Cerrar"><i data-i="x"></i></button><h2>Comparar</h2><div class="cmp-scroll" id="cmpTable"></div></div></div>
+
+  <div class="cmp-modal" id="qv" hidden role="dialog" aria-modal="true" aria-label="Vista rápida"><div class="cmp-box glass qv-box"><button class="icon-btn cmp-x" id="qvX" aria-label="Cerrar"><i data-i="x"></i></button><div id="qvBody"></div></div></div>
+
+  <footer class="footer"></footer>
+  <button class="fab" aria-label="Hablar con un asesor"><i data-i="chat"></i></button>
+
+  <script>window.CAT_FIJA = 'lubricantes';</script>
+  <script src="catalogo.js"></script>
+  <script src="app.js?v=13"></script>
+  <script src="asistente.js"></script>
+  <script>
+    const $ = s => document.querySelector(s);
+    const PZ = ['accesorios', 'lubricantes', 'repuestos'];
+    const LEADS = {
+      campo: 'Potencia y precisión para cultivar la tierra que alimenta a Colombia.',
+      agua: 'Motobombas, electrobombas y equipos de presión para riego y suministro.',
+      energia: 'Respaldo eléctrico para mantener el campo siempre en marcha.',
+      fumigacion: 'Cobertura uniforme para cosechas sanas y libres de plagas.',
+      construccion: 'Muy pronto tendremos productos disponibles en esta categoría.',
+      ferreteria: 'Herramientas de alta resistencia para el trabajo de todos los días.',
+      accesorios: 'Protección personal y complementos para poner tu maquinaria a trabajar.',
+      lubricantes: 'Aceites 2T y 4T, aceite de cadena y grasas para proteger tu motor.',
+      repuestos: 'Repuestos para mantener tu maquinaria funcionando como el primer día.'
+    };
+    const qs = new URLSearchParams(location.search);
+    const cat = window.CAT_FIJA;
+    const esPz = PZ.includes(cat);
+    const items = CATALOGO.filter(p => p.cat === cat);
+
+    document.title = `${CATEGORIAS[cat].nombre} | Agro UNICORN`;
+    $('#catEyebrow').textContent = esPz ? 'Piezas y accesorios' : 'Categoría';
+    $('#catTitle').textContent = CATEGORIAS[cat].nombre + '.';
+    $('#catLead').textContent = LEADS[cat];
+    (esPz ? $('#navPz') : $('#navProd')).setAttribute('aria-current', 'page');
+    if (esPz) $('#back').href = 'piezas-accesorios.html';
+    // la luz ambiente de la categoría acompaña al mouse por toda la página
+    document.addEventListener('DOMContentLoaded', () => baseAmbient(cat));
+    // solo la categoría actual (las demás se eligen desde "Volver a categorías")
+    const ICON = { campo: 'leaf', agua: 'drop', energia: 'bolt', fumigacion: 'spray', construccion: 'hammer', ferreteria: 'wrench', accesorios: 'helmet', lubricantes: 'oil', repuestos: 'gear' };
+    $('#catCurrent').style.setProperty('--amb', AMB[cat]);
+    $('#catCurrent').innerHTML = `<span class="ic">${icon(ICON[cat])}</span>${CATEGORIAS[cat].nombre}`;
+
+    // ---------- Mi equipo ----------
+    const EQ = window.EQ, mi = EQ.get();
+    const reduceM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const nrm = s => String(s).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+    $('#eqBar').innerHTML = mi
+      ? `${icon('check')}<span>Mostrando primero lo que sirve para tu <b>${escHTML(EQ.etiqueta())}</b></span><a class="link" href="piezas-accesorios.html#finder">Cambiar</a><button class="link" id="eqOff">Quitar</button>`
+      : `${icon('wrench')}<span>¿Para qué máquina buscas? Te mostramos solo lo que le sirve.</span><a class="btn btn-primary" href="piezas-accesorios.html#finder" style="min-height:36px;padding:0 16px">Elegir mi equipo</a>`;
+    if ($('#eqOff')) $('#eqOff').onclick = () => { EQ.clear(); location.href = location.pathname; };
+    $('#catDeco').innerHTML = icon(ICON[cat]); $('#eqBar').hidden = !esPz;
+    document.querySelector('.cat-hero').dataset.cat = cat; document.querySelector('.cat-hero').style.setProperty('--amb', AMB[cat]);
+    // garaje: cambiar de máquina sin salir de la categoría
+    if (EQ.garaje().length > 1) $('#eqBar').insertAdjacentHTML('beforeend', EQ.garaje().map((g, i) => `<button class="opt" data-g="${i}" aria-pressed="${!!mi && EQ.etiqueta(g) === EQ.etiqueta()}">${escHTML(EQ.etiqueta(g))}</button>`).join(''));
+    $('#eqBar').addEventListener('click', e => { const g = e.target.closest('[data-g]'); if (g) { EQ.activar(+g.dataset.g); location.reload(); } });
+    // mini guías de uso (consejos generales: confirmar siempre con el manual de tu equipo)
+    const GUIAS = {
+      lubricantes: ['Cómo mezclar aceite 2T', `<p>Los equipos de 2 tiempos usan gasolina mezclada con aceite. Calcula cuánto aceite necesitas:</p><div class="mix"><label>Gasolina (litros) <input type="number" id="mixL" min="0.5" step="0.5" value="4" inputmode="decimal"></label><label>Proporción <select id="mixR" class="select"><option value="50">50:1 (la más común)</option><option value="40">40:1</option><option value="25">25:1</option></select></label><div class="mix-out"><small>Aceite 2T necesario</small><b id="mixOut">80 ml</b></div></div><p class="nota">Mezcla en un recipiente limpio y agita antes de llenar. Usa la proporción que indique el manual de tu equipo.</p>`],
+      accesorios: ['Cómo afilar la cadena de la motosierra', `<ol><li>Fija la espada y marca el primer diente para no perder la cuenta.</li><li>Usa la lima del diámetro que pide tu cadena (está en el manual) y mantén el mismo ángulo.</li><li>Da el mismo número de pasadas a cada diente, siempre hacia afuera.</li><li>Revisa los limitadores de profundidad y deja la cadena con aceite.</li></ol><p class="nota">Si la cadena echa polvo en vez de astillas, ya necesita afilado.</p>`],
+      repuestos: ['Cada cuánto revisar bujía y filtro', `<ul><li><b>Filtro de aire:</b> límpialo seguido; si trabajas con polvo, casi en cada uso.</li><li><b>Bujía:</b> revísala de vez en cuando. Negra, húmeda o con depósitos: límpiala o cámbiala.</li><li><b>Filtro de combustible:</b> si el equipo se ahoga o pierde fuerza, cámbialo.</li></ul><p class="nota">Son pautas generales; el manual de tu equipo manda.</p>`]
+    };
+    Object.assign(GUIAS, {
+      campo: ['Cómo elegir tu equipo de campo', `<ul><li><b>Guadañadora:</b> para maleza liviana basta un motor pequeño; para monte denso o uso diario, busca más potencia (kW) y cuchilla en vez de hilo.</li><li><b>Motosierra:</b> la longitud de la espada debe ser un poco mayor al grosor de lo que cortas; más cilindraje significa más fuerza, pero también más peso.</li><li><b>Motor 2T o 4T:</b> los de 2T pesan menos y se mezclan con aceite; los de 4T consumen menos y usan aceite aparte.</li></ul><p class="nota">Son pautas generales. Si dudas, un asesor te ayuda por WhatsApp.</p>`],
+      agua: ['Cómo elegir una motobomba o electrobomba', `<ul><li><b>Altura máxima (m):</b> qué tan arriba puede subir el agua. Elige una con margen sobre lo que necesitas.</li><li><b>Caudal (gpm o L/min):</b> cuánta agua mueve. Importa para riego y llenado de tanques.</li><li><b>Gasolina o diésel</b> si no tienes luz en el sitio; <b>eléctrica</b> si tienes corriente estable (revisa si es monofásica o trifásica).</li></ul><p class="nota">Son pautas generales; confirma los datos técnicos de cada equipo en su ficha.</p>`],
+      fumigacion: ['Cómo elegir una fumigadora', `<ul><li><b>Manual:</b> cultivos pequeños y huertas.</li><li><b>De espalda:</b> fincas medianas; más autonomía y comodidad.</li><li><b>Estacionaria:</b> áreas grandes o con manguera larga.</li></ul><p class="nota">Revisa la capacidad del tanque y el alcance de la lanza.</p>`],
+      energia: ['Cómo elegir un generador', `<ul><li>Suma la potencia de lo que vas a conectar y deja un margen de reserva.</li><li>Los equipos con motor (bombas, herramientas) necesitan más potencia al arrancar que funcionando.</li><li>Revisa si entrega 110 V, 220 V o ambos.</li></ul><p class="nota">Pauta general; consulta con un asesor si tienes cargas especiales.</p>`]
+    });
+    if (GUIAS[cat]) { $('#guia').hidden = false; $('#guia summary').innerHTML = icon('wrench') + ' ' + GUIAS[cat][0]; $('#guiaBody').innerHTML = GUIAS[cat][1];
+      const mix = () => { const ml = Math.round(+$('#mixL').value * 1000 / +$('#mixR').value); if ($('#mixOut')) $('#mixOut').textContent = (isFinite(ml) ? ml : 0) + ' ml'; };
+      if ($('#mixL')) { $('#mixL').oninput = mix; $('#mixR').onchange = mix; mix(); } }
+    // vista rápida
+    $('#grid').addEventListener('click', e => {
+      if (e.target.closest('button, a, input, label, [data-pzs]')) return;
+      const b = e.target.closest('.card[data-id]'); if (!b) return; e.stopPropagation();
+      abrirVista(b.dataset.id);
+    }, true);
+    document.addEventListener('keydown', e => { const c = document.activeElement; if (e.key === 'Enter' && c && c.matches && c.matches('#grid .card[data-id]')) { e.stopImmediatePropagation(); abrirVista(c.dataset.id); } }, true);
+    function abrirVista(id) {
+      const p = CATALOGO.find(q => q.id === id);
+      $('#qvBody').innerHTML = `<div class="qv-in"><img src="${p.imagens[0]}" alt=""><div><span class="eyebrow">${escHTML(p.tipo)}${p.marca && p.marca !== 'Otras marcas' ? ' · ' + escHTML(p.marca) : ''}</span><h2>${escHTML(p.titulo)}</h2>${window.piezasPill(p)}<span class="pills">${(p.compat || []).map(c => `<span class="pill">${escHTML(c)}</span>`).join('')}${EQ.es(p) ? `<span class="pill ok">${icon('check')} Sirve para tu equipo</span>` : ''}</span><p class="price" style="margin:14px 0">${formatoCOP(p.precio)}</p><div class="sheet-actions"><button class="btn btn-primary" data-add="${p.id}" ${p.disponible ? '' : 'disabled'}>${icon('cart')} ${p.disponible ? 'Agregar' : 'Agotado'}</button><button class="btn btn-ghost" data-open-full="${p.id}">Ver ficha completa</button></div></div></div>`;
+      $('#qv').hidden = false; mount($('#qv'));
+    }
+    $('#qv').addEventListener('click', e => { if (e.target.id === 'qv' || e.target.closest('#qvX')) $('#qv').hidden = true; const f = e.target.closest('[data-open-full]'); if (f) { $('#qv').hidden = true; abrirProducto(f.dataset.openFull); } });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') $('#qv').hidden = true; });
+
+    // ---------- Filtros ----------
+    const uniq = k => [...new Set(items.map(p => p[k]).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'es'));
+    const compatVals = [...new Set(items.flatMap(p => p.compat || []))].sort((a, b) => a.localeCompare(b, 'es'));
+    const tCount = {}; items.forEach(p => tCount[p.tipo] = (tCount[p.tipo] || 0) + 1);
+    const OTROS = Object.keys(tCount).filter(t => tCount[t] === 1); const usaOtros = OTROS.length >= 3;
+    const prices = items.map(p => p.precio).sort((a, b) => a - b);
+    const round = v => { const m = Math.pow(10, Math.max(3, String(Math.round(v)).length - 2)); return Math.round(v / m) * m; };
+    const cuts = prices.length > 3 ? [1, 2, 3].map(k => round(prices[Math.floor(prices.length * k / 4)])) : [];
+    const RANGES = cuts.length ? [[0, cuts[0]], [cuts[0] + 1, cuts[1]], [cuts[1] + 1, cuts[2]], [cuts[2] + 1, Infinity]].filter(([a, b]) => a < b) : [];
+    const rLabel = ([a, b]) => b === Infinity ? `Más de ${formatoCOP(a - 1)}` : a === 0 ? `Hasta ${formatoCOP(b)}` : `${formatoCOP(a)} – ${formatoCOP(b)}`;
+    const MI = 'Solo lo que sirve para mi equipo';
+    const POT = [['Hasta 1 kW', x => x > 0 && x <= 1], ['De 1 a 3 kW', x => x > 1 && x <= 3], ['Más de 3 kW', x => x > 3]];
+    const GROUPS = [
+      ['mi', 'Mi equipo', esPz && mi ? [MI] : []],
+      ['tipo', 'Tipo', uniq('tipo')],
+      ['compat', 'Compatible con', compatVals],
+      ['motor', 'Motor', esPz ? [] : [...new Set(items.map(p => p.motor).filter(Boolean))].sort()],
+      ['pot', 'Potencia', esPz || !items.some(p => potenciaDe(p) > 0) ? [] : POT.map(x => x[0])],
+      ['marca', 'Marca', uniq('marca')],
+      ['precio', 'Precio', RANGES.map(rLabel)],
+      ['pz', 'Piezas', !esPz && items.some(p => piezasDe(p).length) ? ['Con piezas compatibles disponibles'] : []],
+      ['disp', 'Disponibilidad', items.some(p => !p.disponible) ? ['Solo disponibles'] : []]
+    ].filter(g => g[2].length > 1 || (['disp', 'mi', 'pz'].includes(g[0]) && g[2].length));
+    const KEYS = ['mi', 'tipo', 'compat', 'motor', 'pot', 'pz', 'marca', 'precio', 'disp'];
+    const F = Object.fromEntries(KEYS.map(k => [k, new Set()])); F.q = '';
+    if (qs.get('search')) F.q = nrm(qs.get('search'));
+    if (qs.get('tipo')) F.tipo.add(qs.get('tipo'));
+    if (qs.get('compat')) F.compat.add(qs.get('compat'));
+    if (qs.get('mi') && mi && esPz) F.mi.add(MI);
+    if (F.q) $('#q').value = qs.get('search');
+
+    $('#filtersBody').innerHTML = GROUPS.map(([k, label, vals]) => `
+      <fieldset><legend>${label}</legend><div class="opts">
+        ${vals.map(v => `<button type="button" class="opt" data-k="${k}" data-v="${escHTML(v)}" aria-pressed="false">${escHTML(v)}</button>`).join('')}
+      </div></fieldset>`).join('');
+
+    // fichas de tipo arriba del listado, con cuántos hay de cada uno
+    const tops = Object.keys(tCount).filter(t => !usaOtros || tCount[t] > 1).sort((a, b) => tCount[b] - tCount[a] || a.localeCompare(b, 'es'));
+    if (tops.length + (usaOtros ? 1 : 0) > 1) {
+      $('#typeChips').innerHTML = `<button class="opt" data-t="*" aria-pressed="true">Todos <small>${items.length}</small></button>` + tops.map(t => `<button class="opt" data-t="${escHTML(t)}" aria-pressed="false">${escHTML(t)} <small>${tCount[t]}</small></button>`).join('') + (usaOtros ? `<button class="opt" data-t="__otros" aria-pressed="false">Otros <small>${OTROS.length}</small></button>` : '');
+    } else $('#typeChips').hidden = true;
+    $('#typeChips').addEventListener('click', e => {
+      const b = e.target.closest('[data-t]'); if (!b) return; const t = b.dataset.t;
+      if (t === '*') F.tipo.clear();
+      else if (t === '__otros') { const todos = OTROS.every(x => F.tipo.has(x)); OTROS.forEach(x => todos ? F.tipo.delete(x) : F.tipo.add(x)); }
+      else F.tipo.has(t) ? F.tipo.delete(t) : F.tipo.add(t);
+      render();
+    });
+
+    function match(p) {
+      if (F.q && !F.q.split(/\s+/).every(w => nrm([p.titulo, p.tipo, p.marca, (p.compat || []).join(' '), p.id.replace(/\D/g, '')].join(' ')).includes(w))) return false;
+      if (F.tipo.size && !F.tipo.has(p.tipo)) return false;
+      if (F.compat.size && !(p.compat || []).some(c => F.compat.has(c))) return false;
+      if (F.mi.size && !EQ.es(p)) return false;
+      if (F.motor.size && !F.motor.has(p.motor)) return false;
+      if (F.pot.size && ![...F.pot].some(l => POT.find(x => x[0] === l)[1](potenciaDe(p)))) return false;
+      if (F.pz.size && !piezasDe(p).length) return false;
+      if (F.marca.size && !F.marca.has(p.marca)) return false;
+      if (F.precio.size && ![...F.precio].some(l => { const [a, b] = RANGES[RANGES.map(rLabel).indexOf(l)]; return p.precio >= a && p.precio <= b; })) return false;
+      if (F.disp.size && !p.disponible) return false;
+      return true;
+    }
+
+    // ---------- Comparar (hasta 3) ----------
+    const CMP = new Set();
+    function paintCmp() {
+      document.querySelectorAll('#grid [data-cmp]').forEach(b => { const on = CMP.has(b.dataset.cmp); b.setAttribute('aria-pressed', on); b.textContent = on ? '✓ Comparando' : '⇄ Comparar'; });
+      $('#cmpBar').hidden = !CMP.size; { let f = 0; try { f = (JSON.parse(localStorage.getItem('favoritos')) || []).length; } catch (e) {} $('#cmpN').textContent = `${CMP.size} de 3 para comparar` + (f ? ` · ${f} favorito${f > 1 ? 's' : ''}` : ''); } $('#cmpGo').disabled = CMP.size < 2;
+    }
+    $('#grid').addEventListener('click', e => {
+      const b = e.target.closest('[data-cmp]'); if (!b) return; e.stopPropagation();
+      const id = b.dataset.cmp; if (CMP.has(id)) CMP.delete(id); else if (CMP.size < 3) CMP.add(id); else toast('Puedes comparar hasta 3 productos');
+      paintCmp();
+    }, true);
+    $('#cmpClear').onclick = () => { CMP.clear(); paintCmp(); };
+    $('#cmpGo').onclick = () => {
+      const ps = [...CMP].map(id => CATALOGO.find(p => p.id === id)), row = (l, f) => `<tr><th>${l}</th>${ps.map(p => `<td>${f(p)}</td>`).join('')}</tr>`;
+      const maxW = Math.max(...ps.map(potenciaDe), 0.001), maq = !esPz;
+      const barato = Math.min(...ps.filter(p => p.disponible).map(p => p.precio));
+      $('#cmpTable').innerHTML = `<table class="cmp-t">${row('', p => `<img src="${p.imagens[0]}" alt=""><b>${escHTML(p.titulo)}</b>`)}${row('Precio', p => `<b class="${p.precio === barato ? 'best' : ''}">${formatoCOP(p.precio)}</b>${p.precio === barato && ps.length > 1 ? ' <small class="best-l">Más económico</small>' : ''}`)}${maq ? row('Potencia', p => potenciaDe(p) ? `<div class="bar"><i style="--w:${Math.round(potenciaDe(p) / maxW * 100)}%"></i></div><small>${+potenciaDe(p).toFixed(2)} kW</small>` : '—') + row('Motor', p => escHTML(p.motor || '—')) + row('Piezas compatibles', p => piezasDe(p).length || '—') : ''}${row('Marca', p => escHTML(p.marca))}${row('Tipo', p => escHTML(p.tipo))}${row('Compatible con', p => escHTML((p.compat || []).join(', ') || '—'))}${row('Para tu equipo', p => EQ.get() ? (EQ.es(p) ? '<span class="best">✓ Sí</span>' : 'No indicado') : '—')}${row('Disponible', p => p.disponible ? 'Sí' : 'Agotado')}${row('', p => `<button class="btn btn-primary" data-add="${p.id}" ${p.disponible ? '' : 'disabled'}>Agregar</button>`)}</table>`;
+      $('#cmpTable').insertAdjacentHTML('beforeend', `<div class="cmp-cards">${ps.map(p => `<div class="cmp-c"><img src="${p.imagens[0]}" alt=""><b>${escHTML(p.titulo)}</b><span>${formatoCOP(p.precio)}${p.precio === barato && ps.length > 1 ? ' · <em class="best-l">Más económico</em>' : ''}</span>${!esPz && potenciaDe(p) ? `<span>${+potenciaDe(p).toFixed(2)} kW · ${escHTML(p.motor || '')}</span>` : ''}<span>${escHTML(p.marca)} · ${escHTML(p.tipo)}</span><button class="btn btn-primary" data-add="${p.id}" ${p.disponible ? '' : 'disabled'}>Agregar</button></div>`).join('')}</div>`);
+      $('#cmpModal').hidden = false;
+    };
+    const closeCmp = () => $('#cmpModal').hidden = true;
+    $('#cmpX').onclick = closeCmp; $('#cmpModal').addEventListener('click', e => { if (e.target.id === 'cmpModal') closeCmp(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCmp(); });
+
+    // ---------- Vista cuadrícula / lista ----------
+    const vista = v => { $('#grid').classList.toggle('list', v === 'list'); $('#vGrid').setAttribute('aria-pressed', v !== 'list'); $('#vList').setAttribute('aria-pressed', v === 'list'); try { localStorage.setItem('vista-piezas', v); } catch (e) {} };
+    $('#vGrid').onclick = () => vista('grid'); $('#vList').onclick = () => vista('list');
+    try { vista(localStorage.getItem('vista-piezas') || 'grid'); } catch (e) {}
+
+    if (!esPz && items.some(p => potenciaDe(p) > 0)) $('#sort').insertAdjacentHTML('beforeend', '<option value="pot">Mayor potencia</option>');
+    if (mi && esPz) { $('#sort').insertAdjacentHTML('afterbegin', '<option value="comp">Más compatibles con tu equipo</option>'); $('#sort').value = 'comp'; }
+
+    let page = 1;
+    function render(resetPage = true) {
+      if (resetPage) page = 1;
+      let list = items.filter(match);
+      const s = $('#sort').value;
+      const SORTS = { pot: (a, b) => potenciaDe(b) - potenciaDe(a), comp: (a, b) => EQ.score(b) - EQ.score(a), asc: (a, b) => a.precio - b.precio, desc: (a, b) => b.precio - a.precio, dto: (a, b) => descuentoDe(b) - descuentoDe(a), az: (a, b) => a.titulo.localeCompare(b.titulo, 'es') };
+      if (s) list = [...list].sort(SORTS[s]);
+      const per = +$('#perPage').value, shown = list.slice(0, per * page);
+      const grid = $('#grid'), prev = resetPage ? 0 : grid.children.length;   // al cargar más solo se agregan las nuevas
+      const antes = new Map(); if (resetPage && !reduceM) grid.querySelectorAll('.card').forEach(c => antes.set(c.dataset.id, c.getBoundingClientRect()));
+      if (resetPage) grid.innerHTML = '';
+      grid.insertAdjacentHTML('beforeend', shown.slice(prev).map((p, i) => cardHTML(p, i)).join(''));
+      grid.querySelectorAll('.card:not([data-x])').forEach(c => {
+        c.dataset.x = 1; const p = CATALOGO.find(q => q.id === c.dataset.id), m = c.querySelector('.card-media');
+        m.insertAdjacentHTML('beforeend', `<button type="button" class="cmp" data-cmp="${p.id}" aria-pressed="false"></button>`);
+        if (EQ.es(p)) m.insertAdjacentHTML('beforeend', '<span class="tag-eq">Sirve para tu equipo</span>');
+        if (!esPz) { const w = potenciaDe(p); if (w) m.insertAdjacentHTML('beforeend', `<span class="pwr"><b>${+w.toFixed(2)}</b><small>kW</small></span>`); if (kitDe(p).length >= 2) m.insertAdjacentHTML('beforeend', '<span class="tag-eq kit-b">Kit de arranque</span>'); }
+      });
+      mount(grid); paintCmp();
+      // las tarjetas se deslizan a su nuevo lugar en vez de saltar
+      antes.forEach((o, id) => { const c = grid.querySelector(`.card[data-id="${id}"]`); if (!c) return; const n = c.getBoundingClientRect(), dx = o.left - n.left, dy = o.top - n.top; if (dx || dy) c.animate([{ transform: `translate(${dx}px,${dy}px)` }, { transform: 'none' }], { duration: 450, easing: 'cubic-bezier(.2,.8,.2,1)' }); });
+      $('#count').textContent = `${shown.length} de ${list.length} productos`;
+      $('#empty').hidden = list.length > 0;
+      if (!items.length) { $('#empty').textContent = LEADS.construccion; $('#espera').hidden = false; }
+      $('#more').hidden = list.length <= shown.length;
+      $('#apply').textContent = `Ver ${list.length} productos`;
+      const active = [...(F.q ? [['q', $('#q').value.trim() || F.q]] : []), ...KEYS.flatMap(k => [...F[k]].map(v => [k, v]))];
+      $('#chips').innerHTML = active.map(([k, v]) => `<button class="fchip" data-k="${k}" data-v="${escHTML(v)}" aria-label="Quitar ${escHTML(v)}">${escHTML(k === 'q' ? '“' + v + '”' : v)} ${icon('x')}</button>`).join('');
+      $('#nFilters').textContent = active.length ? `(${active.length})` : '';
+      document.querySelectorAll('#filtersBody .opt').forEach(b => b.setAttribute('aria-pressed', F[b.dataset.k].has(b.dataset.v)));
+      document.querySelectorAll('#typeChips [data-t]').forEach(b => { const t = b.dataset.t; b.setAttribute('aria-pressed', t === '*' ? !F.tipo.size : t === '__otros' ? OTROS.every(x => F.tipo.has(x)) : F.tipo.has(t)); });
+    }
+
+    $('#filtersBody').addEventListener('click', e => {
+      const b = e.target.closest('.opt'); if (!b) return;
+      const set = F[b.dataset.k]; set.has(b.dataset.v) ? set.delete(b.dataset.v) : set.add(b.dataset.v);
+      render();
+    });
+    $('#chips').addEventListener('click', e => {
+      const b = e.target.closest('.fchip'); if (!b) return;
+      if (b.dataset.k === 'q') { F.q = ''; $('#q').value = ''; } else F[b.dataset.k].delete(b.dataset.v);
+      render();
+    });
+    $('#clear').onclick = () => { KEYS.forEach(k => F[k].clear()); F.q = ''; $('#q').value = ''; render(); };
+    let tq; $('#q').addEventListener('input', () => { clearTimeout(tq); tq = setTimeout(() => { F.q = nrm($('#q').value.trim()); render(); }, 150); });
+    $('#sort').onchange = () => render();
+    $('#perPage').onchange = () => render();
+    $('#more').onclick = () => { page++; render(false); };
+
+    const sheet = $('#filters');
+    const openF = () => { sheet.classList.add('open'); $('#closeFilters').focus(); };
+    const closeF = () => sheet.classList.remove('open');
+    $('#openFilters').onclick = openF; $('#closeFilters').onclick = closeF; $('#apply').onclick = closeF;
+    if (!GROUPS.length) $('#openFilters').hidden = true;
+
+    document.addEventListener('DOMContentLoaded', () => { render(); mount(document); });
+  </script>
+</body>
+</html>

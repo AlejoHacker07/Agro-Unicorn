@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Carrito | Agro UNICORN</title>
+  <link rel="preconnect" href="https://unicorn.com.co">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="estilo.css?v=13">
+  <script>try{if(localStorage.getItem('modo-oscuro')==='activado')document.documentElement.classList.add('dark-mode')}catch(e){}</script>
+</head>
+<body class="cart-page">
+  <header class="site-header glass">
+    <a class="brand" href="UNICORN.html"><img src="https://agro.unicorn.com.co/web/image/16724/20200424%20auls_planobordeazul_v1.png" alt=""><span>AGRO UNICORN</span></a>
+    <nav class="nav" aria-label="Principal">
+      <a href="productos.html">Productos</a>
+      <a href="piezas-accesorios.html">Piezas y accesorios</a>
+    </nav>
+    <div class="header-actions">
+      <button class="search-pill" data-open-search><i data-i="search"></i> Buscar <kbd>/</kbd></button>
+      <button class="icon-btn theme-btn" aria-label="Modo oscuro"></button>
+      <button class="icon-btn cart-btn cart-target" aria-label="Carrito" aria-current="page"><i data-i="cart"></i><span class="badge cart-badge">0</span></button>
+    </div>
+  </header>
+  <nav class="tabbar glass" aria-label="Principal (celular)">
+    <a href="UNICORN.html"><i data-i="home"></i>Inicio</a>
+    <a href="productos.html"><i data-i="grid"></i>Productos</a>
+    <a href="piezas-accesorios.html"><i data-i="wrench"></i>Piezas</a>
+    <button data-open-search><i data-i="search"></i>Buscar</button>
+    <a class="cart-target" href="carrito.html" aria-current="page"><i data-i="cart"></i>Carrito<span class="badge cart-badge">0</span></a>
+  </nav>
+
+  <main class="wrap cart-main" style="padding-top:120px">
+    <span class="eyebrow">Tu compra</span>
+    <h1 class="h-section" id="h1">Carrito.</h1>
+    <ol class="steps" id="steps" aria-label="Pasos de la compra">
+      <li data-s="0"><span>1</span><em>Carrito</em></li>
+      <li data-s="1"><span>2</span><em>Envío</em></li>
+      <li data-s="2"><span>3</span><em>Pago</em></li>
+      <li data-s="3"><span>4</span><em>Listo</em></li>
+    </ol>
+
+    <div class="checkout" id="layout">
+      <section id="view" aria-live="polite"></section>
+
+      <aside class="panel-box glass" id="summary">
+        <h2>Resumen</h2>
+        <div class="mini-order" id="miniOrder" hidden></div>
+        <div class="sum-row"><span>Subtotal</span><span data-n="sub">$ 0</span></div>
+        <div class="sum-row" id="rowDesc" hidden><span>Cupón SML (11%)</span><span data-n="desc" style="color:var(--danger)">$ 0</span></div>
+        <div class="sum-row"><span>Envío</span><span data-n="env">$ 0</span></div>
+        <div class="sum-row" id="rowExtra" hidden><span>Aportes</span><span data-n="extra">$ 0</span></div>
+        <div class="sum-row total"><span>Total</span><b data-n="tot">$ 0</b></div>
+        <div class="ship" id="ship"><p id="shipText"></p><div class="bar" id="bar"><i></i></div></div>
+        <form class="coupon" id="couponForm"><label class="sr-only" for="coupon">Código de descuento</label><input id="coupon" placeholder="Código de descuento"><button class="btn btn-ghost" style="min-height:44px">Aplicar</button></form>
+        <p id="couponMsg" style="margin:6px 0 0; font-size:0.85rem; font-weight:600"></p>
+        <button class="btn btn-primary" id="nextBtn" style="width:100%; margin-top:16px">Continuar compra <i data-i="arrow"></i></button>
+        <p class="trust"><i data-i="shield"></i> Garantía UNICORN · Soporte técnico incluido</p>
+        <div class="wa-row" id="waRow"><button class="btn btn-ghost" id="waQuote" type="button"><i data-i="chat"></i> Pedir cotización por WhatsApp</button><button class="link" id="shareCart" type="button">Compartir mi carrito</button></div>
+      </aside>
+    </div>
+  </main>
+
+  <div class="m-bar glass" id="mBar" hidden><div><small>Total</small><b data-n="tot">$ 0</b></div><button class="btn btn-primary" id="nextBtn2" type="button">Continuar <i data-i="arrow"></i></button></div>
+
+  <div class="pay-overlay" id="payOv" hidden role="status" aria-live="polite"><div class="pay-ov-box glass"><div class="spin" aria-hidden="true"></div><b id="payOvT"></b><small id="payOvS"></small></div></div>
+
+  <footer class="footer"></footer>
+  <button class="fab" aria-label="Hablar con un asesor"><i data-i="chat"></i></button>
+
+  <script src="catalogo.js"></script>
+  <script src="app.js?v=13"></script>
+  <script src="asistente.js"></script>
+  <script>
+    const $ = s => document.querySelector(s);
+    const read = () => { try { return JSON.parse(localStorage.getItem('carrito')) || []; } catch (e) { return []; } };
+    const write = c => { try { localStorage.setItem('carrito', JSON.stringify(c)); } catch (e) {} };
+    const num = s => Number(String(s).replace(/[^\d]/g, '')) || 0;
+    // mismas reglas de la página actual: envío gratis desde $1.500.000, regiones y cupón SML
+    // plazos de entrega: son estimados de ejemplo, hay que confirmarlos con logística
+    const META = 1500000;
+    const REGIONES = [['15000', 'Nacional', 15000, 'truck', [3, 6]], ['8000', 'Piedemonte llanero', 8000, 'pin', [2, 3]], ['5000', 'Villavicencio / Meta', 5000, 'pin', [1, 2]], ['0', 'Recogida en tienda', 0, 'home', [0, 1]]];
+    const WA = '573237881307';
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const saved = (() => { try { return JSON.parse(localStorage.getItem('datos-envio')); } catch (e) { return null; } })();
+    const S = { step: 0, region: null, sostenible: false, donacion: false, cupon: 0, datos: saved || {}, recordar: !!saved, pago: '', dir: 'fwd' };
+    let UNDO = null;
+    const byTitulo = t => CATALOGO.find(p => p.titulo === t);
+    const norm = s => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+
+    // fechas estimadas (solo días hábiles)
+    const DIAS = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'], MESES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+    const habiles = n => { const d = new Date(); let k = 0; while (k < n) { d.setDate(d.getDate() + 1); if (d.getDay() % 6) k++; } return d; };
+    const fmtF = d => `${DIAS[d.getDay()]} ${d.getDate()} ${MESES[d.getMonth()]}`;
+    const eta = v => { const [a, b] = REGIONES.find(r => r[0] === v)[4]; return a === 0 ? 'Lista en 1 día hábil' : `Llega ${fmtF(habiles(a))} – ${fmtF(habiles(b))}`; };
+
+    // "Completa tu equipo": accesorios, lubricantes y repuestos que sirven para lo que llevas
+    const COMPAT = { Motosierra: ['motosierras', 'motores 2t'], 'Guadañadora': ['guadañadoras', 'motores 2t'], Sopladora: ['sopladoras', 'motores 2t'], Cortasetos: ['motores 2t'], Generador: ['generadores', 'motores 4t'], Motobomba: ['motobombas', 'motores 4t'], Motoazada: ['motoazadas', 'motores 4t'], 'Cortacésped': ['cortacésped', 'motores 4t'], Hidrolavadora: ['hidrolavadoras'] };
+    function sugerencias() {
+      const cart = read(), dentro = new Set(cart.map(x => x.titulo));
+      const prods = cart.map(x => byTitulo(x.titulo)).filter(Boolean);
+      const claves = new Set(prods.flatMap(p => COMPAT[p.tipo] || (/fumigadora/i.test(p.tipo) ? ['fumigadoras'] : [])));
+      const marcas = new Set(prods.map(p => p.marca));
+      const ord = CATALOGO.filter(p => ['accesorios', 'lubricantes', 'repuestos'].includes(p.cat) && p.disponible && !dentro.has(p.titulo))
+        .map(p => { const c = norm(p.compat); let s = 0; claves.forEach(k => { if (c.includes(norm(k))) s += 5; }); if (marcas.has(p.marca)) s += 2; if (p.etiqueta) s += 1; s += { lubricantes: 3, accesorios: 2, repuestos: 0 }[p.cat]; return [s, p]; })
+        .sort((a, b) => b[0] - a[0] || a[1].id.localeCompare(b[1].id)).map(x => x[1]);
+      const out = [], tipos = new Set();
+      for (const p of ord) { if (out.length < 3 && !tipos.has(p.tipo)) { out.push(p); tipos.add(p.tipo); } }
+      for (const p of ord) { if (out.length < 3 && !out.includes(p)) out.push(p); }
+      return out;
+    }
+
+    function totals() {
+      const c = read();
+      const sub = c.reduce((s, p) => s + num(p.precio) * (p.cantidad || 1), 0);
+      const desc = Math.round(sub * S.cupon);
+      const base = sub - desc;
+      const elegido = S.region !== null;
+      const gratis = base >= META && S.region !== '0';
+      const env = !c.length ? 0 : (elegido && !gratis ? +S.region : 0) + (S.sostenible ? 2000 : 0);
+      const extra = c.length && S.donacion ? 2000 : 0;
+      return { c, sub, desc, base, env, extra, tot: base + env + extra, gratis, pendiente: !!c.length && !elegido };
+    }
+
+    function paintSummary() {
+      const t = totals();
+      tweenTo('sub', t.sub); tweenTo('desc', -t.desc); tweenTo('extra', t.extra); tweenTo('tot', t.tot);
+      if (t.pendiente && !S.sostenible) { document.querySelectorAll('[data-n="env"]').forEach(e => e.textContent = 'Por calcular'); prev.env = 0; } else tweenTo('env', t.env);
+      $('#rowDesc').hidden = !t.desc; $('#rowExtra').hidden = !t.extra;
+      const pct = Math.min(100, t.base / META * 100);
+      $('#bar i').style.width = pct + '%'; $('#bar').classList.toggle('full', pct >= 100); $('#summary').classList.toggle('free', pct >= 100);
+      $('#shipText').innerHTML = pct >= 100 ? '<b>¡Tienes envío gratis!</b>' : `Te faltan <b>${formatoCOP(META - t.base)}</b> para el envío gratis.`;
+      $('#nextBtn').disabled = !t.c.length;
+      $('#ship').hidden = !t.c.length;
+      $('#waRow').hidden = !t.c.length;
+      document.querySelectorAll('.ship-opt [data-c]').forEach(e => { const v = e.dataset.c; e.textContent = (t.gratis && v !== '0') || v === '0' ? 'Gratis' : formatoCOP(+v); });
+      const r = S.region && $('#etaLine'); if (r) r.innerHTML = icon('truck') + ' ' + (S.region === '0' ? 'Tu pedido estará listo para recoger en 1 día hábil (estimado).' : eta(S.region) + ' (estimado).');
+      $('#mBar').hidden = !t.c.length || S.step === 3;
+    }
+    // números que se animan (idea 12)
+    const prev = {};
+    function tweenTo(k, v) {
+      const els = document.querySelectorAll(`[data-n="${k}"]`), from = prev[k] ?? v; prev[k] = v;
+      const t0 = performance.now();
+      const f = t => { const p = Math.min(1, (t - t0) / 450), e = 1 - Math.pow(1 - p, 3); els.forEach(el => el.textContent = (v < 0 ? '- ' : '') + formatoCOP(Math.abs(from + (v - from) * e))); if (p < 1) requestAnimationFrame(f); };
+      reduce ? els.forEach(el => el.textContent = (v < 0 ? '- ' : '') + formatoCOP(Math.abs(v))) : requestAnimationFrame(f);
+    }
+
+    const ILUSTRACION = '<svg class="ill" viewBox="0 0 200 150" aria-hidden="true"><ellipse cx="100" cy="138" rx="62" ry="7" fill="currentColor" opacity=".08"/><rect class="float" x="66" y="30" width="30" height="26" rx="7" fill="#f57c00"/><rect class="float" x="108" y="20" width="26" height="30" rx="7" fill="#1a12a6"/><circle class="float" cx="146" cy="46" r="10" fill="#2e7d32"/><path d="M30 44h22l10 52h70l12-38H58" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" opacity=".85"/><circle cx="78" cy="116" r="9" fill="currentColor"/><circle cx="128" cy="116" r="9" fill="currentColor"/></svg>';
+    const campo = (n, label, auto, ph, tipo = 'text') => `<div class="field"><label for="f-${n}">${label}</label><input id="f-${n}" name="${n}" type="${tipo}" autocomplete="${auto}" required value="${escHTML(S.datos[n] || '')}" placeholder="${ph}" ${n === 'tel' ? 'inputmode="tel"' : ''} aria-describedby="e-${n}"><small class="f-err" id="e-${n}" role="alert"></small></div>`;
+    const VIEWS = {
+      0() {
+        const c = read();
+        if (!c.length) return `<div class="panel-box glass empty-cart">${ILUSTRACION}<h2>Tu carrito está vacío</h2><p>Explora el catálogo y agrega lo que necesitas.</p><a class="btn btn-primary" href="productos.html">Ver productos <i data-i="arrow"></i></a></div>`;
+        const sug = sugerencias();
+        return `
+          <div class="cart-lines">${c.map((p, i) => {
+            const P = byTitulo(p.titulo), q = p.cantidad || 1;
+            return `
+            <div class="cl-wrap" data-line="${i}">
+              <div class="cl-bg" aria-hidden="true">${icon('trash')}</div>
+              <div class="line glass cl">
+                <img src="${escHTML(p.imagen || '')}" alt="" loading="lazy" decoding="async">
+                <div class="cl-info">
+                  ${P && P.marca && P.marca !== 'Otras marcas' ? `<span class="cl-marca">${escHTML(P.marca)}</span>` : ''}
+                  <b>${escHTML(p.titulo)}</b>
+                  <small>${formatoCOP(num(p.precio))} c/u</small>
+                  <div class="cl-actions">
+                    ${P ? `<button class="link" data-save="${i}">${icon('heart')} Guardar para después</button>` : ''}
+                    <button class="link danger" data-del="${i}" aria-label="Eliminar ${escHTML(p.titulo)}">${icon('trash')} Eliminar</button>
+                  </div>
+                </div>
+                <div class="cl-side">
+                  <b class="cl-total">${formatoCOP(num(p.precio) * q)}</b>
+                  <div class="stepper"><button data-q="-1" data-i="${i}" aria-label="Quitar uno">${icon('minus')}</button><span>${q}</span><button data-q="1" data-i="${i}" aria-label="Agregar uno">${icon('plus')}</button></div>
+                </div>
+              </div>
+            </div>`; }).join('')}</div>
+          <div class="panel-box glass" style="margin-top:20px" id="envioBox">
+            <h2>¿Cómo quieres recibirlo?</h2>
+            <div class="ship-opts" id="shipOpts" role="radiogroup" aria-label="Región de envío">${REGIONES.map(([v, n, , ic]) => `
+              <label class="ship-opt"><input type="radio" name="region" value="${v}" ${S.region === v ? 'checked' : ''}><span class="ic">${icon(ic)}</span><span><b>${n}</b><small><span data-c="${v}"></span> · ${eta(v)}</small></span></label>`).join('')}</div>
+            <p class="eta-line" id="etaLine"></p>
+            <p class="f-err" id="err0" role="alert"></p>
+          </div>
+          <div class="panel-box glass" style="margin-top:20px">
+            <h2>Extras</h2>
+            <label class="sw"><input type="checkbox" role="switch" id="sost" ${S.sostenible ? 'checked' : ''}><span class="sw-ui"></span><span>${icon('leaf')} Envío sostenible (+ $ 2.000)</span></label>
+            <label class="sw"><input type="checkbox" role="switch" id="don" ${S.donacion ? 'checked' : ''}><span class="sw-ui"></span><span>${icon('leaf')} Donar $ 2.000 para la protección de los bosques</span></label>
+          </div>
+          ${sug.length ? `<div style="margin-top:28px"><span class="eyebrow">Completa tu equipo</span><p class="cross-sub">Pensado para lo que llevas en el carrito.</p>
+            <div class="cross">${sug.map(p => `
+              <div class="line glass"><img src="${p.imagens[0]}" alt="" loading="lazy" decoding="async"><div><b>${escHTML(p.titulo)}</b><small>${formatoCOP(p.precio)}</small>${p.compat ? `<small>Compatible: ${escHTML([].concat(p.compat).slice(0, 2).join(', '))}</small>` : ''}</div>
+              <button class="add" data-add="${p.id}" aria-label="Agregar ${escHTML(p.titulo)}"><i data-i="plus"></i></button></div>`).join('')}</div>
+          </div>` : ''}`;
+      },
+      1() {
+        return `
+          <form class="panel-box glass" id="form1" novalidate>
+            <h2>Datos de envío</h2>
+            ${campo('nombre', 'Nombre completo', 'name', 'Ej. Juan Pérez')}
+            <div class="field-row">
+              ${campo('tel', 'Teléfono', 'tel', '300 123 4567', 'tel')}
+              ${campo('ciudad', 'Ciudad', 'address-level2', 'Ej. Villavicencio')}
+            </div>
+            ${campo('dir', 'Dirección de entrega', 'street-address', 'Calle 123 #45-67')}
+            <label class="sw"><input type="checkbox" role="switch" id="recordar" ${S.recordar ? 'checked' : ''}><span class="sw-ui"></span><span>Recordar mis datos en este dispositivo para la próxima compra</span></label>
+          </form>`;
+      },
+      2() {
+        const M = [['tarjeta', 'card', 'Tarjeta', 'Crédito o débito'], ['pse', 'bank', 'PSE', 'Desde tu banco'], ['billetera', 'phone', 'Nequi / Daviplata', 'Billetera virtual'], ['efectivo', 'cash', 'Contra entrega', S.region === '0' ? 'Pagas al recoger' : 'Pagas al recibir']];
+        const ce = CONTRA_ENTREGA.includes(S.region);
+        if (S.pago === 'efectivo' && !ce) S.pago = '';
+        return `
+          <div class="panel-box glass">
+            <h2>Método de pago</h2>
+            ${MODO_PRUEBA ? `<div class="test-banner">${icon('shield')}<span><b>Modo de prueba.</b> No se cobra nada y los datos de pago no se guardan ni se envían a ningún lado.</span></div>` : ''}
+            <div class="pay-grid" role="radiogroup" aria-label="Método de pago">${M.map(([v, ic, n, d]) => `
+              <label class="pay${v === 'efectivo' && !ce ? ' off' : ''}"><input type="radio" name="pago" value="${v}" ${S.pago === v ? 'checked' : ''} ${v === 'efectivo' && !ce ? 'disabled' : ''}><span class="ic"><i data-i="${ic}"></i></span><span>${n}<small>${v === 'efectivo' && !ce ? 'Solo en Villavicencio, Piedemonte o tienda' : d}</small></span></label>`).join('')}</div>
+            <div class="pay-panel" id="payPanel">${panelPago()}</div>
+            <p id="err2" class="f-err" role="alert"></p>
+          </div>`;
+      },
+      3() {
+        return `
+          <div class="panel-box glass done-box">
+            <div class="ok-ic"><i data-i="check"></i></div>
+            <h2 style="font-size:1.8rem">¡Pedido recibido!</h2>
+            <p class="lead" style="margin:0 auto 8px">Pedido <b>#${S.orden}</b> a nombre de ${escHTML(S.datos.nombre || '')}. Te contactaremos al ${escHTML(S.datos.tel || '')} para coordinar el despacho a ${escHTML(S.datos.ciudad || '')}.</p>
+            <p class="done-pay">Método de pago: <b>${escHTML(S.pagoLabel || '')}</b></p>
+            <p style="color:var(--muted); font-size:0.85rem">Página en desarrollo: el pedido todavía no se envía a ningún sistema y no se cobró nada.</p>
+            <a class="btn btn-primary" href="UNICORN.html" style="margin-top:12px">Volver al inicio</a>
+          </div>`;
+      }
+    };
+
+    /* =========================================================
+       PAGO (de prueba): cada método pide sus propios datos, como en la vida real.
+       Nada se guarda ni se envía: los datos viven solo en memoria mientras se escribe.
+       ========================================================= */
+    const MODO_PRUEBA = true;
+    const CONTRA_ENTREGA = ['5000', '8000', '0'];   // regiones con pago contra entrega (ejemplo, confirmar)
+    const BANCOS = ['Banco Agrario de Colombia', 'Banco AV Villas', 'Banco Caja Social', 'Banco de Bogotá', 'Banco de Occidente', 'Banco Falabella', 'Banco GNB Sudameris', 'Banco Pichincha', 'Banco Popular', 'Banco W', 'Bancolombia', 'Bancoomeva', 'BBVA Colombia', 'Davivienda', 'Itaú', 'Lulo Bank', 'Scotiabank Colpatria'];
+    const PF = S.pf = { tipo: 'credito', num: '', nombre: '', exp: '', cvv: '', cuotas: '1', dtipo: 'CC', dnum: '', persona: 'natural', banco: '', email: '', billetera: 'nequi', cel: '', cambio: '' };
+    const BRANDS = { visa: 'Visa', mastercard: 'Mastercard', amex: 'American Express', diners: 'Diners' };
+    const ccBrand = n => /^4/.test(n) ? 'visa' : /^(5[1-5]|2[2-7])/.test(n) ? 'mastercard' : /^3[47]/.test(n) ? 'amex' : /^3(0[0-5]|[68])/.test(n) ? 'diners' : '';
+    const luhn = d => { let s = 0, alt = false; for (let i = d.length - 1; i >= 0; i--) { let n = +d[i]; if (alt) { n *= 2; if (n > 9) n -= 9; } s += n; alt = !alt; } return d.length > 0 && s % 10 === 0; };
+    const fmtNum = v => { const d = v.replace(/\D/g, '').slice(0, 19), g = /^3[47]/.test(d) ? [4, 6, 5] : [4, 4, 4, 4, 3]; let i = 0; return g.map(n => { const s = d.slice(i, i + n); i += n; return s; }).filter(Boolean).join(' '); };
+    const fmtExp = v => { const d = v.replace(/\D/g, '').slice(0, 4); return d.length > 2 ? d.slice(0, 2) + '/' + d.slice(2) : d; };
+    const fmtCel = v => { const d = v.replace(/\D/g, '').slice(0, 10); return d.replace(/(\d{3})(\d{0,3})(\d{0,4})/, (m, a, b, c) => [a, b, c].filter(Boolean).join(' ')); };
+    const digits = v => v.replace(/\D/g, '');
+
+    const PR = {
+      num: v => { const d = digits(v); return (d.length >= 13 && luhn(d)) || 'Revisa el número de la tarjeta.'; },
+      nombre: v => (v.trim().length >= 3 && /^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ' .-]+$/.test(v.trim())) || 'Escribe el nombre como aparece en la tarjeta.',
+      exp: v => { const m = v.match(/^(\d{2})\/(\d{2})$/); if (!m || +m[1] < 1 || +m[1] > 12) return 'Escribe la fecha como MM/AA.'; const fin = new Date(2000 + +m[2], +m[1], 1); return fin > new Date() || 'La tarjeta está vencida.'; },
+      cvv: v => v.length === (ccBrand(digits(PF.num)) === 'amex' ? 4 : 3) || 'Escribe el código de seguridad (3 dígitos, 4 en American Express).',
+      dnum: v => /^[A-Za-z0-9]{5,12}$/.test(v.trim()) || 'Escribe el número de documento, sin puntos ni espacios.',
+      email: v => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()) || 'Escribe un correo válido para el comprobante.',
+      banco: v => !!v || 'Selecciona tu banco.',
+      cel: v => (digits(v).length === 10 && digits(v)[0] === '3') || 'Escribe tu celular de 10 dígitos (empieza por 3).',
+      cambio: v => !v.trim() || num(v) >= totals().tot || 'El valor debe ser igual o mayor al total del pedido.'
+    };
+    const REQ = { tarjeta: ['num', 'nombre', 'exp', 'cvv', 'dnum'], pse: ['banco', 'dnum', 'email'], billetera: ['cel'], efectivo: ['cambio'] };
+
+    const seg = (key, opts) => `<div class="seg" role="group">${opts.map(([v, l]) => `<button type="button" data-seg="${key}" data-v="${v}" aria-pressed="${PF[key] === v}">${l}</button>`).join('')}</div>`;
+    const pfield = (n, label, attrs = '', extra = '') => `<div class="field"><label for="p-${n}">${label}</label><input id="p-${n}" data-pf="${n}" value="${escHTML(PF[n])}" ${attrs} aria-describedby="pe-${n}">${extra}<small class="f-err" id="pe-${n}" role="alert"></small></div>`;
+    const docSel = () => `<div class="field-row doc-row"><div class="field"><label for="p-dtipo">Tipo de documento</label><select id="p-dtipo" data-pf="dtipo">${(PF.persona === 'juridica' && S.pago === 'pse' ? [['NIT', 'NIT']] : [['CC', 'Cédula de ciudadanía'], ['CE', 'Cédula de extranjería'], ['NIT', 'NIT'], ['PA', 'Pasaporte']]).map(([v, l]) => `<option value="${v}" ${PF.dtipo === v ? 'selected' : ''}>${l}</option>`).join('')}</select></div>${pfield('dnum', 'Número de documento', 'autocomplete="off" inputmode="text"')}</div>`;
+
+    function panelPago() {
+      const tot = totals().tot;
+      if (!S.pago) return `<div class="note"><i data-i="lock"></i><span>Elige cómo quieres pagar.</span></div>`;
+      if (S.pago === 'tarjeta') {
+        const cuotas = PF.tipo === 'credito' ? [1, 3, 6, 12, 24, 36] : [1];
+        return `
+          <div class="cc-wrap"><div class="cc" id="cc" data-brand=""><div class="cc-face cc-front"><span class="cc-chip"></span><span class="cc-brand" id="ccBrand"></span><div class="cc-num" id="ccNum">•••• •••• •••• ••••</div><div class="cc-row"><div><small>Titular</small><b id="ccName">NOMBRE APELLIDO</b></div><div><small>Vence</small><b id="ccExp">MM/AA</b></div></div></div><div class="cc-face cc-back"><span class="cc-stripe"></span><div class="cc-sig"><small>CVV</small><b id="ccCvv">•••</b></div></div></div></div>
+          ${seg('tipo', [['credito', 'Crédito'], ['debito', 'Débito']])}
+          ${pfield('num', 'Número de la tarjeta', 'autocomplete="cc-number" inputmode="numeric" placeholder="0000 0000 0000 0000" maxlength="23"')}
+          ${pfield('nombre', 'Nombre en la tarjeta', 'autocomplete="cc-name" placeholder="Como aparece en la tarjeta"')}
+          <div class="field-row">${pfield('exp', 'Vencimiento', 'autocomplete="cc-exp" inputmode="numeric" placeholder="MM/AA" maxlength="5"')}${pfield('cvv', 'Código de seguridad', 'autocomplete="cc-csc" inputmode="numeric" type="password" placeholder="CVV" maxlength="4"')}</div>
+          <div class="field"><label for="p-cuotas">Cuotas</label><select id="p-cuotas" data-pf="cuotas">${cuotas.map(n => `<option value="${n}" ${+PF.cuotas === n ? 'selected' : ''}>${n === 1 ? 'Pago de contado' : `${n} cuotas · ${formatoCOP(Math.round(tot / n))} al mes (estimado, ejemplo)`}</option>`).join('')}</select></div>
+          ${docSel()}
+          ${MODO_PRUEBA ? `<div class="test-cards"><small>Tarjetas de prueba:</small><button type="button" class="link" data-testcard="ok">Probar aprobada</button><button type="button" class="link" data-testcard="no">Probar rechazada</button></div>` : ''}`;
+      }
+      if (S.pago === 'pse') return `
+          <div class="field"><label>Tipo de persona</label>${seg('persona', [['natural', 'Persona natural'], ['juridica', 'Persona jurídica']])}</div>
+          <div class="field"><label for="p-banco">Banco</label><select id="p-banco" data-pf="banco"><option value="">Selecciona tu banco…</option>${BANCOS.map(bn => `<option ${PF.banco === bn ? 'selected' : ''}>${bn}</option>`).join('')}</select><small class="f-err" id="pe-banco" role="alert"></small></div>
+          ${docSel()}
+          ${pfield('email', 'Correo electrónico', 'type="email" autocomplete="email" placeholder="tucorreo@ejemplo.com"')}
+          <div class="note"><i data-i="lock"></i><span>Al confirmar te llevaremos al sitio de tu banco para autorizar el pago, y luego volverás aquí.</span></div>`;
+      if (S.pago === 'billetera') return `
+          <div class="field"><label>Billetera</label>${seg('billetera', [['nequi', 'Nequi'], ['daviplata', 'Daviplata']])}</div>
+          ${pfield('cel', `Celular de tu ${PF.billetera === 'nequi' ? 'Nequi' : 'Daviplata'}`, 'type="tel" autocomplete="tel" inputmode="tel" placeholder="300 123 4567"')}
+          <div class="note"><i data-i="phone"></i><span>${PF.billetera === 'nequi' ? 'Te enviaremos una notificación a tu app Nequi. Ábrela y aprueba el pago.' : 'Te enviaremos una notificación a tu app Daviplata. Ábrela y aprueba el pago con tu clave.'}</span></div>`;
+      return `
+          <div class="note"><i data-i="cash"></i><span>${S.region === '0' ? 'Pagas en efectivo en la tienda cuando recojas tu pedido.' : 'Pagas en efectivo cuando recibas tu pedido. Ten el valor a la mano.'}<br><b>Total a pagar: ${formatoCOP(tot)}</b></span></div>
+          ${pfield('cambio', '¿Con cuánto billete vas a pagar? (opcional, para llevarte el cambio)', 'inputmode="numeric" placeholder="Ej. 1.000.000"')}`;
+    }
+    function paintPanel(focusSel) {
+      $('#payPanel').innerHTML = panelPago(); mount($('#payPanel')); paintCC();
+      if (focusSel) $(focusSel)?.focus();
+    }
+    function paintCC() {
+      const cc = $('#cc'); if (!cc) return;
+      const d = digits(PF.num), b = ccBrand(d);
+      cc.dataset.brand = b; $('#ccBrand').textContent = BRANDS[b] || '';
+      const full = b === 'amex' ? '•••• •••••• •••••' : '•••• •••• •••• ••••';
+      $('#ccNum').textContent = PF.num ? (PF.num + full.slice(PF.num.length)) : full;
+      $('#ccName').textContent = PF.nombre.trim().toUpperCase() || 'NOMBRE APELLIDO';
+      $('#ccExp').textContent = PF.exp || 'MM/AA';
+      $('#ccCvv').textContent = PF.cvv ? '•'.repeat(PF.cvv.length) : '•••';
+    }
+    function validarCampo(n) {
+      const inp = $(`#p-${n}`); if (!inp) return true;
+      const r = PR[n](PF[n]), ok = r === true;
+      inp.setAttribute('aria-invalid', !ok); const e = $('#pe-' + n); if (e) e.textContent = ok ? '' : r;
+      inp.closest('.field').classList.toggle('ok', ok && PF[n] !== '');
+      return ok;
+    }
+    function validarPago() {
+      const malos = REQ[S.pago].filter(n => !validarCampo(n));
+      return malos.length ? $(`#p-${malos[0]}`) : null;
+    }
+
+    // eventos del formulario de pago
+    $('#view').addEventListener('input', e => {
+      const n = e.target.dataset.pf; if (!n) return;
+      let v = e.target.value;
+      if (n === 'num') v = fmtNum(v); else if (n === 'exp') v = fmtExp(v); else if (n === 'cvv') v = digits(v).slice(0, 4); else if (n === 'cel') v = fmtCel(v);
+      else if (n === 'cambio') { const d = digits(v); v = d ? Number(d).toLocaleString('es-CO') : ''; }
+      e.target.value = PF[n] = v; paintCC();
+      if (e.target.getAttribute('aria-invalid') === 'true') validarCampo(n);
+    });
+    $('#view').addEventListener('change', e => {
+      const n = e.target.dataset.pf; if (!n || e.target.tagName !== 'SELECT') return;
+      PF[n] = e.target.value; if (n === 'banco') validarCampo('banco');
+    });
+    $('#view').addEventListener('focusout', e => { const n = e.target.dataset?.pf; if (n && PR[n] && PF[n]) validarCampo(n); if (n === 'cvv') $('#cc')?.classList.remove('flip'); });
+    $('#view').addEventListener('focusin', e => { if (e.target.dataset?.pf === 'cvv') $('#cc')?.classList.add('flip'); });
+    $('#view').addEventListener('click', e => {
+      const sg = e.target.closest('[data-seg]');
+      if (sg) {
+        PF[sg.dataset.seg] = sg.dataset.v;
+        if (sg.dataset.seg === 'tipo' && sg.dataset.v === 'debito') PF.cuotas = '1';
+        if (sg.dataset.seg === 'persona') PF.dtipo = sg.dataset.v === 'juridica' ? 'NIT' : 'CC';
+        return paintPanel(`[data-seg="${sg.dataset.seg}"][data-v="${sg.dataset.v}"]`);
+      }
+      const tc = e.target.closest('[data-testcard]');
+      if (tc) {
+        const y = String((new Date().getFullYear() + 2) % 100).padStart(2, '0');
+        Object.assign(PF, { tipo: 'credito', num: tc.dataset.testcard === 'ok' ? '4242 4242 4242 4242' : '4000 0000 0000 0002', nombre: 'Juan Perez', exp: '12/' + y, cvv: '123', dtipo: 'CC', dnum: '1234567890' });
+        paintPanel();
+      }
+    });
+    $('#view').addEventListener('change', e => { if (e.target.name === 'pago') { S.pago = e.target.value; $('#err2').textContent = ''; paintPanel(); } });
+
+    // simulación del cobro: pantalla de espera como en una pasarela real
+    function esperar(titulo, pasos) {
+      const ov = $('#payOv'); $('#payOvT').textContent = titulo; ov.hidden = false;
+      return new Promise(res => {
+        let i = 0;
+        const paso = () => { if (i >= pasos.length) { ov.hidden = true; return res(); } $('#payOvS').textContent = pasos[i][0]; ov.classList.toggle('ping', !!pasos[i][2]); setTimeout(paso, reduce ? 300 : pasos[i++][1]); };
+        paso();
+      });
+    }
+    async function pagar() {
+      const btns = [$('#nextBtn'), $('#nextBtn2')]; btns.forEach(b => b.disabled = true);
+      let label = '', rechazo = '';
+      if (S.pago === 'tarjeta') {
+        const d = digits(PF.num); label = `${BRANDS[ccBrand(d)] || 'Tarjeta'} •••• ${d.slice(-4)}`;
+        await esperar('Procesando tu pago', [['Verificando tu tarjeta…', 1100], ['Autorizando con tu banco…', 1300]]);
+        if (d.endsWith('0002')) rechazo = 'Tu banco rechazó la transacción. Prueba con otra tarjeta o con otro método de pago.';
+      } else if (S.pago === 'pse') {
+        label = `PSE · ${PF.banco}`;
+        await esperar(`Redirigiendo a ${PF.banco}`, [['Abriendo el sitio seguro de tu banco…', 1200], ['Esperando la autorización del pago…', 1500]]);
+      } else if (S.pago === 'billetera') {
+        label = `${PF.billetera === 'nequi' ? 'Nequi' : 'Daviplata'} · ••• ${digits(PF.cel).slice(-4)}`;
+        await esperar('Esperando tu aprobación', [[`Enviamos una notificación a tu ${PF.billetera === 'nequi' ? 'Nequi' : 'Daviplata'}…`, 1300], ['Abre la app y aprueba el pago', 2200, true]]);
+      } else label = S.region === '0' ? 'Pago en tienda' : 'Contra entrega';
+      btns.forEach(b => b.disabled = false);
+      if (rechazo) { const e = $('#err2'); e.textContent = rechazo; const p = $('#payPanel'); p.classList.remove('shake'); void p.offsetWidth; p.classList.add('shake'); return; }
+      try { localStorage.setItem('ultima-compra', JSON.stringify(read().map(x => ({ t: x.titulo, c: x.cantidad || 1 })))); } catch (e) {}
+      S.pagoLabel = label; S.orden = 'UN-' + Date.now().toString().slice(-6); write([]);
+      Object.assign(PF, { num: '', nombre: '', exp: '', cvv: '', dnum: '', cel: '', email: '' });   // no se conserva ningún dato de pago
+      S.step = 3; S.dir = 'fwd'; render(); scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+    }
+
+    function miniPedido() {
+      const c = read(), box = $('#miniOrder');
+      box.hidden = S.step === 0 || !c.length;
+      if (box.hidden) return;
+      box.innerHTML = `<details open><summary>Tu pedido · ${c.reduce((s, p) => s + p.cantidad, 0)} productos</summary>${c.map(p => `<div class="mo-line"><img src="${escHTML(p.imagen || '')}" alt="" loading="lazy"><b>${escHTML(p.titulo)}</b><span>${p.cantidad} × ${formatoCOP(num(p.precio))}</span></div>`).join('')}</details>`;
+    }
+
+    function render(anim = true) {
+      const keep = S.focus, fl = S.flash; S.focus = S.flash = null;
+      $('#view').innerHTML = `<div class="step-view ${anim ? S.dir : 'still'}">${VIEWS[S.step]()}</div>`;
+      $('#h1').textContent = ['Carrito.', 'Envío.', 'Pago.', 'Listo.'][S.step];
+      $('#steps').style.setProperty('--p', S.step);
+      document.querySelectorAll('#steps li').forEach(li => { const n = +li.dataset.s; li.classList.toggle('on', n === S.step); li.classList.toggle('ok', n < S.step); });
+      $('#summary').hidden = S.step === 3;
+      $('#couponForm').hidden = S.step > 0;
+      $('#couponMsg').hidden = S.step > 0;
+      const lbl = ['Continuar compra', 'Continuar al pago', 'Confirmar pedido'][S.step] || '', ic = icon(S.step === 2 ? 'lock' : 'arrow');
+      $('#nextBtn').innerHTML = lbl + ' ' + ic;
+      $('#nextBtn2').innerHTML = (S.step === 2 ? 'Confirmar' : 'Continuar') + ' ' + ic;
+      if (S.step === 2) paintCC();
+      mount($('#view'));
+      miniPedido(); paintSummary(); updateBadge();
+      if (fl) {
+        const w = $(`.cl-wrap[data-line="${fl.i}"]`);
+        if (w) { w.querySelector('.stepper span').classList.add(fl.d > 0 ? 'roll-up' : 'roll-down'); w.querySelector('.cl-total').classList.add('tick'); }
+      }
+      if (keep) $(keep)?.focus();
+      if (S.step === 3 && anim) confeti();
+    }
+    function updateBadge() { const n = read().reduce((s, p) => s + p.cantidad, 0); document.querySelectorAll('.cart-badge').forEach(b => { b.textContent = n; b.classList.toggle('on', n > 0); }); }
+
+    // quitar con animación + "Deshacer" (o guardarlo en favoritos para después)
+    function quitar(i, guardar) {
+      const c = read(), it = c[i]; if (!it) return;
+      if (guardar) { const P = byTitulo(it.titulo); if (P) window.guardarFavorito(P.id); }
+      const w = document.querySelector(`.cl-wrap[data-line="${i}"]`);
+      const hecho = () => {
+        c.splice(i, 1); write(c); UNDO = { it, i }; render(false);
+        toast(`${guardar ? 'Guardado en favoritos' : 'Producto quitado'} <button class="toast-btn" data-undo-cart>Deshacer</button>`, 4500);
+      };
+      if (!w || reduce) return hecho();
+      w.style.setProperty('--h', w.offsetHeight + 'px'); w.classList.add('out'); setTimeout(hecho, 320);
+    }
+    document.addEventListener('click', e => {
+      if (!e.target.closest('[data-undo-cart]') || !UNDO) return;
+      const c = read(); c.splice(Math.min(UNDO.i, c.length), 0, UNDO.it); write(c); UNDO = null;
+      document.querySelector('.toast')?.classList.remove('show'); render(false);
+    });
+
+    $('#view').addEventListener('click', e => {
+      const q = e.target.closest('[data-q]'), del = e.target.closest('[data-del]'), sv = e.target.closest('[data-save]');
+      if (del) return quitar(+del.dataset.del, false);
+      if (sv) return quitar(+sv.dataset.save, true);
+      if (!q) return;
+      const c = read(), i = +q.dataset.i, d = +q.dataset.q;
+      if (!c[i]) return;
+      if (c[i].cantidad + d <= 0) return quitar(i, false);
+      c[i].cantidad += d; write(c);
+      S.flash = { i, d }; S.focus = `[data-q="${d}"][data-i="${i}"]`; render(false);
+    });
+    $('#view').addEventListener('change', e => {
+      if (e.target.name === 'region') { S.region = e.target.value; $('#err0').textContent = ''; }
+      if (e.target.id === 'sost') S.sostenible = e.target.checked;
+      if (e.target.id === 'don') S.donacion = e.target.checked;
+      if (e.target.id === 'recordar') S.recordar = e.target.checked;
+      paintSummary();
+    });
+    // los productos de "Completa tu equipo" usan el agregar compartido; repintar al terminar
+    $('#view').addEventListener('click', e => { if (e.target.closest('[data-add]')) setTimeout(() => render(false), 900); });
+
+    // deslizar hacia la izquierda para quitar (celular)
+    let sw = null;
+    $('#view').addEventListener('pointerdown', e => { const l = e.target.closest('.cl'); if (e.pointerType !== 'touch' || !l || e.target.closest('button')) return; sw = { l, x: e.clientX, dx: 0, on: false }; });
+    $('#view').addEventListener('pointermove', e => {
+      if (!sw) return; const dx = e.clientX - sw.x;
+      if (!sw.on && Math.abs(dx) > 8) sw.on = true;
+      if (!sw.on) return;
+      sw.dx = Math.min(0, dx); sw.l.style.transition = 'none'; sw.l.style.transform = `translateX(${sw.dx}px)`;
+      sw.l.previousElementSibling.style.opacity = Math.min(1, -sw.dx / 90);
+    });
+    const finSwipe = () => {
+      if (!sw) return; const { l, dx } = sw; sw = null;
+      if (dx < -90) return quitar(+l.closest('.cl-wrap').dataset.line, false);
+      l.style.transition = 'transform .3s var(--ease)'; l.style.transform = ''; l.previousElementSibling.style.opacity = 0;
+    };
+    $('#view').addEventListener('pointerup', finSwipe); $('#view').addEventListener('pointercancel', finSwipe);
+
+    // validación mientras se escribe
+    const REGLAS = {
+      nombre: v => v.trim().split(/\s+/).filter(w => w.length > 1).length >= 2 || 'Escribe tu nombre y apellido.',
+      tel: v => v.replace(/\D/g, '').length === 10 || 'Escribe un número de 10 dígitos, por ejemplo 300 123 4567.',
+      ciudad: v => v.trim().length >= 3 || 'Escribe tu ciudad o municipio.',
+      dir: v => v.trim().length >= 6 || 'Escribe la dirección completa (calle, número, barrio o vereda).'
+    };
+    function validar(inp) {
+      const r = REGLAS[inp.name](inp.value), ok = r === true;
+      inp.setAttribute('aria-invalid', !ok); $('#e-' + inp.name).textContent = ok ? '' : r;
+      inp.closest('.field').classList.toggle('ok', ok);
+      return ok;
+    }
+    $('#view').addEventListener('focusout', e => { if (e.target.matches('#form1 input[name]') && e.target.value) validar(e.target); });
+    $('#view').addEventListener('input', e => {
+      const i = e.target; if (!i.matches('#form1 input[name]')) return;
+      if (i.name === 'tel') { const d = i.value.replace(/\D/g, '').slice(0, 10); i.value = d.replace(/(\d{3})(\d{0,3})(\d{0,4})/, (m, a, b, c) => [a, b, c].filter(Boolean).join(' ')); }
+      if (i.getAttribute('aria-invalid') === 'true') validar(i);
+    });
+
+    $('#couponForm').onsubmit = e => {
+      e.preventDefault();
+      const v = $('#coupon').value.trim().toUpperCase();
+      S.cupon = v === 'SML' ? 0.11 : 0;
+      $('#couponMsg').textContent = !v ? '' : S.cupon ? '✓ Cupón SML aplicado (11%)' : 'Código inválido';
+      $('#couponMsg').style.color = S.cupon ? 'var(--ok)' : 'var(--danger)';
+      if (S.cupon) { $('#coupon').classList.remove('flash'); void $('#coupon').offsetWidth; $('#coupon').classList.add('flash'); }
+      paintSummary();
+    };
+    // al escribir un código válido se muestra cuánto se ahorraría
+    $('#coupon').addEventListener('input', e => {
+      const ok = e.target.value.trim().toUpperCase() === 'SML' && !S.cupon, ahorro = Math.round(totals().sub * 0.11);
+      $('#couponMsg').textContent = ok ? `Con este código ahorras ${formatoCOP(ahorro)}. Toca Aplicar.` : '';
+      $('#couponMsg').style.color = 'var(--ok)';
+    });
+
+    $('#nextBtn').onclick = () => {
+      if (S.step === 0) {
+        if (!read().length) return;
+        if (S.region === null) {
+          $('#err0').textContent = 'Elige cómo quieres recibir tu pedido.';
+          const o = $('#shipOpts'); o.classList.remove('shake'); void o.offsetWidth; o.classList.add('shake');
+          $('#envioBox').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
+          return;
+        }
+      }
+      if (S.step === 1) {
+        const inputs = [...$('#form1').querySelectorAll('input[name]')];
+        const malos = inputs.filter(i => !validar(i));
+        if (malos.length) { malos[0].focus(); return; }
+        S.datos = Object.fromEntries(inputs.map(i => [i.name, i.value.trim()]));
+        S.recordar = $('#recordar').checked;
+        try { S.recordar ? localStorage.setItem('datos-envio', JSON.stringify(S.datos)) : localStorage.removeItem('datos-envio'); } catch (e) {}
+      }
+      if (S.step === 2) {
+        if (!S.pago) { $('#err2').textContent = 'Elige un método de pago.'; return; }
+        const malo = validarPago(); if (malo) { malo.focus(); return; }
+        return pagar();
+      }
+      S.step++; S.dir = 'fwd'; render(); scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+    };
+    $('#nextBtn2').onclick = () => $('#nextBtn').click();
+    $('#steps').addEventListener('click', e => { const li = e.target.closest('li.ok'); if (li && S.step < 3) { S.dir = 'back'; S.step = +li.dataset.s; render(); } });
+
+    // cotizar o compartir el carrito
+    function textoCarrito() {
+      const t = totals();
+      const reg = S.region !== null ? REGIONES.find(r => r[0] === S.region)[1] : 'por definir';
+      return ['Hola UNICORN, quiero cotizar este pedido:', ...t.c.map(p => `• ${p.cantidad} × ${p.titulo} — ${formatoCOP(num(p.precio) * p.cantidad)}`), `Subtotal: ${formatoCOP(t.sub)}`, `Envío: ${reg}`].join('\n');
+    }
+    $('#waQuote').onclick = () => window.open(`https://wa.me/${WA}?text=${encodeURIComponent(textoCarrito())}`, '_blank', 'noopener');
+    $('#shareCart').onclick = async () => {
+      const text = textoCarrito().replace('Hola UNICORN, quiero cotizar este pedido:', 'Mi carrito en UNICORN:');
+      try { if (navigator.share) { await navigator.share({ title: 'Mi carrito UNICORN', text }); return; } await navigator.clipboard.writeText(text); toast(`${icon('check')} Carrito copiado`); }
+      catch (e) { if (e.name !== 'AbortError') toast('No se pudo compartir'); }
+    };
+
+    // confeti de la confirmación
+    function confeti() {
+      const box = $('.done-box'); if (!box || reduce) return;
+      const cols = ['#1a12a6', '#f57c00', '#2e7d32', '#ffb35c'];
+      for (let k = 0; k < 48; k++) {
+        const s = document.createElement('i'); s.className = 'conf'; s.style.background = cols[k % 4]; box.appendChild(s);
+        const a = Math.random() * Math.PI * 2, v = 120 + Math.random() * 220;
+        s.animate([
+          { transform: 'translate(0,0) rotate(0)', opacity: 1 },
+          { transform: `translate(${Math.cos(a) * v}px, ${Math.sin(a) * v - 80}px) rotate(${Math.random() * 540}deg)`, opacity: 1, offset: 0.55 },
+          { transform: `translate(${Math.cos(a) * v * 1.1}px, ${Math.sin(a) * v + 220}px) rotate(720deg)`, opacity: 0 }
+        ], { duration: 1500 + Math.random() * 700, easing: 'cubic-bezier(0.2, 0.8, 0.2, 1)' }).onfinish = () => s.remove();
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => { render(); baseAmbient('marca'); });
+  </script>
+</body>
+</html>

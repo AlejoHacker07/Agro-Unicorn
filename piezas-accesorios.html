@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Piezas y accesorios | Agro UNICORN</title>
+  <link rel="preconnect" href="https://unicorn.com.co">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="estilo.css?v=13">
+  <script>try{if(localStorage.getItem('modo-oscuro')==='activado')document.documentElement.classList.add('dark-mode')}catch(e){}</script>
+</head>
+<body>
+  <header class="site-header glass">
+    <a class="brand" href="UNICORN.html"><img src="https://agro.unicorn.com.co/web/image/16724/20200424%20auls_planobordeazul_v1.png" alt=""><span>AGRO UNICORN</span></a>
+    <nav class="nav" aria-label="Principal">
+      <a href="productos.html" id="navProd">Productos</a>
+      <a href="piezas-accesorios.html" id="navPz">Piezas y accesorios</a>
+    </nav>
+    <div class="header-actions">
+      <button class="search-pill" data-open-search><i data-i="search"></i> Buscar <kbd>/</kbd></button>
+      <button class="icon-btn theme-btn" aria-label="Modo oscuro"></button>
+      <button class="icon-btn cart-btn cart-target" data-open-cart aria-label="Carrito"><i data-i="cart"></i><span class="badge cart-badge">0</span></button>
+    </div>
+  </header>
+  <nav class="tabbar glass" aria-label="Principal (celular)">
+    <a href="UNICORN.html"><i data-i="home"></i>Inicio</a>
+    <a href="productos.html"><i data-i="grid"></i>Productos</a>
+    <a href="piezas-accesorios.html" aria-current="page"><i data-i="wrench"></i>Piezas</a>
+    <button data-open-search><i data-i="search"></i>Buscar</button>
+    <button class="cart-target" data-open-cart><i data-i="cart"></i>Carrito<span class="badge cart-badge">0</span></button>
+  </nav>
+
+  <main class="wrap">
+    <section class="acc-hero">
+      <span class="eyebrow reveal" id="eyebrow">Productos</span>
+      <h1 class="h-section reveal" id="title" style="--i:1">Nuestras categorías.</h1>
+      <p class="lead reveal" id="lead" style="--i:2"></p>
+    </section>
+    <section class="finder-wrap" id="finder" hidden></section>
+    <div class="acc" id="acc"></div>
+    <section class="kits" id="kits" hidden></section>
+    <section class="lista" id="lista" hidden></section>
+    <section class="lista" id="repetir" hidden></section>
+  </main>
+
+  <footer class="footer"></footer>
+  <button class="fab" aria-label="Hablar con un asesor"><i data-i="chat"></i></button>
+  <div class="portal" id="portal" aria-hidden="true"></div>
+
+  <script src="catalogo.js"></script>
+  <script src="app.js?v=13"></script>
+  <script src="asistente.js"></script>
+  <script>
+    const GRUPO = 'piezas';
+    const DATA = {
+      productos: {
+        eyebrow: 'Productos', title: 'Nuestras categorías.', lead: 'Elige una categoría para ver todos sus productos. Cada una tiene su propia luz.',
+        items: [
+          ['campo', 'leaf', 'https://agro.unicorn.com.co/web/image/23203/1391921_610433935680148_1338398718_n.jpg', 'Guadañadoras, motosierras, cortasetos y más'],
+          ['agua', 'drop', 'https://agro.unicorn.com.co/web/image/23205/motobomba.jpg', 'Motobombas, electrobombas y presión'],
+          ['fumigacion', 'spray', 'https://agro.unicorn.com.co/web/image/23207/Fumigadora%20Mitsubishi%20TU26.jpg', 'Manuales, de espalda y estacionarias'],
+          ['energia', 'bolt', 'https://agro.unicorn.com.co/web/image/23209/Generador%20Powermaster%204500.jpg', 'Generadores para la finca y la obra'],
+          ['construccion', 'hammer', 'https://agro.unicorn.com.co/web/image/23211/Apisonador%20Forte%20Varios.jpg', 'Muy pronto'],
+          ['ferreteria', 'wrench', 'https://agro.unicorn.com.co/web/image/23213/Herramienta%20Bellota.jpg', 'Herramientas para el trabajo diario']
+        ]
+      },
+      piezas: {
+        eyebrow: 'Piezas y accesorios', title: 'Todo para tu máquina.', lead: 'Protección, lubricantes y repuestos para que tu equipo trabaje como el primer día.',
+        items: [
+          ['accesorios', 'helmet', 'https://agro.unicorn.com.co/web/image/23219/Agrounicorn%20-%20Accesorios.jpg', 'Protección personal y complementos'],
+          ['lubricantes', 'oil', 'https://agro.unicorn.com.co/web/image/23215/agrounicorn%20-%20Grasa-Lubricante-Multiprop%C3%B3sito.jpg', 'Aceites 2T y 4T, cadena y grasas'],
+          ['repuestos', 'gear', 'https://agro.unicorn.com.co/web/image/23217/AgroUnicorn%20Repuestos.jpg', 'Repuestos originales y genéricos']
+        ]
+      }
+    }[GRUPO];
+    document.getElementById(GRUPO === 'piezas' ? 'navPz' : 'navProd').setAttribute('aria-current', 'page');
+    document.getElementById('eyebrow').textContent = DATA.eyebrow;
+    document.getElementById('title').textContent = DATA.title;
+    document.getElementById('lead').textContent = DATA.lead;
+    const total = c => CATALOGO.filter(p => p.cat === c).length;
+    document.getElementById('acc').innerHTML = DATA.items.map(([cat, ic, img, sub], i) => `
+      <a class="cat-card reveal" style="--i:${i}; --amb:${AMB[cat]}" data-amb="${cat}" href="${CATEGORIAS[cat].pagina}">
+        <img src="${img}" alt="" loading="lazy">
+        <span class="vname" aria-hidden="true">${CATEGORIAS[cat].nombre}</span>
+        <span class="cat-top"><span class="cat-ic">${icon(ic)}</span><span class="cat-count">${total(cat) ? total(cat) + ' productos' : 'Muy pronto'}</span></span>
+        <span class="cat-bottom"><span><h2>${CATEGORIAS[cat].nombre}</h2><p>${sub}</p></span><span class="cat-go">${icon('arrow')}</span></span>
+      </a>`).join('');
+
+    // al entrar a una categoría, la pantalla se tiñe de su color
+    document.getElementById('acc').addEventListener('click', e => {
+      const a = e.target.closest('.cat-card'); if (!a || e.metaKey || e.ctrlKey) return;
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      e.preventDefault();
+      const portal = document.getElementById('portal');
+      portal.style.setProperty('--amb', AMB[a.dataset.amb]);
+      portal.style.setProperty('--px', e.clientX + 'px'); portal.style.setProperty('--py', e.clientY + 'px');
+      portal.classList.add('go');
+      setTimeout(() => location.href = a.href, 450);
+    });
+    addEventListener('pageshow', () => document.getElementById('portal').classList.remove('go'));
+    document.addEventListener('DOMContentLoaded', () => { mount(document); makeAccordion(document.getElementById('acc')); });
+    // ---------- Solo en Piezas y accesorios: buscador de equipo, accesos rápidos y kits ----------
+    if (GRUPO === 'piezas') {
+      const EQ = window.EQ, PZ = EQ.PZ;
+      const SIL = { Motosierra: 'wrench', 'Guadañadora': 'leaf', Sopladora: 'leaf', Cortasetos: 'leaf', Fumigadora: 'spray', Generador: 'bolt', Motobomba: 'drop', Electrobomba: 'drop', Motoazada: 'leaf', 'Cortacésped': 'leaf', 'Cerca eléctrica': 'bolt' };
+      const fin = document.getElementById('finder');
+      function paintFinder(foco) {
+        const s = EQ.get() || {}, M = EQ.maquinas();
+        const tipos = EQ.tipos().filter(t => M[t]);
+        const marcas = s.tipo ? Object.keys(M[s.tipo]).sort((a, b) => M[s.tipo][b].length - M[s.tipo][a].length || a.localeCompare(b, 'es')) : [];
+        const modelos = s.tipo && s.marca && s.marca !== 'otra' ? M[s.tipo][s.marca] || [] : [];
+        const cuenta = c => CATALOGO.filter(p => p.cat === c && EQ.es(p)).length;
+        const vistos = new Set(), thumbs = s.tipo ? CATALOGO.filter(p => PZ.includes(p.cat) && p.disponible && EQ.es(p)).sort((a, b) => EQ.score(b) - EQ.score(a) || a.precio - b.precio).filter(p => !vistos.has(p.tipo) && vistos.add(p.tipo)).slice(0, 6) : [];
+        const counts = s.tipo ? PZ.map(c => [c, cuenta(c)]) : [], total = counts.reduce((a, [, n]) => a + n, 0);
+        fin.hidden = false;
+        fin.innerHTML = `<div class="finder glass">
+          <div class="finder-head"><div><h2>¿Para qué máquina buscas?</h2><p>Dinos cuál es tu equipo y te mostramos solo lo que le sirve.</p></div>${s.tipo ? '<button class="link" id="eqOff">Quitar mi equipo</button>' : ''}</div>
+          ${EQ.garaje().length ? `<div class="garage"><b>Mi garaje</b>${EQ.garaje().map((g, i) => `<span class="gchip" aria-pressed="${!!s.tipo && g.tipo === s.tipo && (g.marca || '') === (s.marca || '') && (g.modelo || '') === (s.modelo || '')}"><button data-ga="${i}">${escHTML(EQ.etiqueta(g))}</button><button data-gd="${i}" aria-label="Quitar ${escHTML(EQ.etiqueta(g))} del garaje">✕</button></span>`).join('')}<button class="opt" data-gnew>+ Otra máquina</button></div>` : ''}
+          <div class="fstep"><span class="fn">1</span><b>Tipo de máquina</b><div class="chips-row">${tipos.map(t => `<button class="opt" data-ft="${t}" aria-pressed="${s.tipo === t}">${t}</button>`).join('')}</div></div>
+          ${s.tipo ? `<div class="fstep in"><span class="fn">2</span><b>Marca</b><div class="chips-row">${marcas.map(m => `<button class="opt" data-fm="${escHTML(m)}" aria-pressed="${s.marca === m}">${escHTML(m)}</button>`).join('')}<button class="opt" data-fm="otra" aria-pressed="${s.marca === 'otra'}">Otra / no sé</button></div></div>` : ''}
+          ${modelos.length ? `<div class="fstep in"><span class="fn">3</span><b>Modelo <small>(opcional)</small></b><select class="select" id="fmod"><option value="">No sé el modelo</option>${modelos.map(p => `<option value="${p.id}" ${s.modelo === p.id ? 'selected' : ''}>${escHTML(p.titulo.slice(0, 70))}</option>`).join('')}</select></div>` : ''}
+          ${s.tipo ? `<div class="fres in"><div class="sil" aria-hidden="true">${icon(SIL[s.tipo] || 'gear')}</div><div class="fres-in"><p>Para tu <b>${escHTML(EQ.etiqueta())}</b> hay <b class="nn" data-to="${total}">${total}</b> piezas compatibles. Lo verás primero en cada categoría.</p>${thumbs.length ? `<div class="fthumbs">${thumbs.map((p, i) => `<button data-open="${p.id}" style="--i:${i}" title="${escHTML(p.titulo)}"><img src="${p.imagens[0]}" alt="${escHTML(p.titulo)}" loading="lazy"></button>`).join('')}</div>` : ''}${EQ.enGaraje() ? '' : '<button class="btn btn-ghost" data-gsave>Guardar en mi garaje</button>'}</div></div><div class="fgo">${counts.map(([c, n]) => `<a class="fgo-a" href="${CATEGORIAS[c].pagina}?mi=1"><b>${CATEGORIAS[c].nombre}</b><small>${n} para tu equipo</small>${icon('arrow')}</a>`).join('')}</div></div>` : ''}
+        </div>`;
+        mount(fin); countUp(fin);
+        if (foco) fin.querySelector(foco)?.focus({ preventScroll: true });
+      }
+      fin.addEventListener('click', e => {
+        const t = e.target.closest('[data-ft]'), m = e.target.closest('[data-fm]');
+        if (e.target.closest('#eqOff')) { EQ.clear(); return paintFinder(); }
+        const ga = e.target.closest('[data-ga]'), gd = e.target.closest('[data-gd]'), op = e.target.closest('[data-open]');
+        if (ga) { EQ.activar(+ga.dataset.ga); return paintFinder(); }
+        if (gd) { EQ.quitar(+gd.dataset.gd); return paintFinder(); }
+        if (e.target.closest('[data-gnew]')) { EQ.clear(); return paintFinder(); }
+        if (e.target.closest('[data-gsave]')) { EQ.guardar(); return paintFinder(); }
+        if (op) return abrirProducto(op.dataset.open);
+        if (t) { EQ.set({ tipo: t.dataset.ft }); paintFinder(`[data-ft="${t.dataset.ft}"]`); }
+        else if (m) { EQ.set({ tipo: EQ.get().tipo, marca: m.dataset.fm }); paintFinder(`[data-fm="${m.dataset.fm}"]`); }
+      });
+      fin.addEventListener('change', e => { if (e.target.id === 'fmod') { EQ.set({ ...EQ.get(), modelo: e.target.value || undefined }); paintFinder('#fmod'); } });
+      function countUp(root) {
+        root.querySelectorAll('[data-to]').forEach(el => {
+          const to = +el.dataset.to; if (matchMedia('(prefers-reduced-motion: reduce)').matches || !to) return el.textContent = to;
+          const t0 = performance.now(); (function f(t) { const k = Math.min(1, (t - t0) / 700); el.textContent = Math.round(to * (1 - Math.pow(1 - k, 3))); if (k < 1) requestAnimationFrame(f); })(t0);
+        });
+      }
+      // lista de repuestos guardados (favoritos) agrupada por máquina, con cotización por WhatsApp
+      const rd = k => { try { return JSON.parse(localStorage.getItem(k)) || []; } catch (e) { return []; } };
+      function paintLista() {
+        const favs = rd('favoritos').map(id => CATALOGO.find(p => p.id === id)).filter(p => p && PZ.includes(p.cat)), el = document.getElementById('lista');
+        el.hidden = !favs.length; if (!favs.length) return;
+        const gar = EQ.garaje().length ? EQ.garaje() : (EQ.get() ? [EQ.get()] : []);
+        const grupos = gar.map(g => [EQ.etiqueta(g), favs.filter(p => EQ.es(p, g))]).filter(([, l]) => l.length);
+        const usados = new Set(grupos.flatMap(([, l]) => l.map(p => p.id))), otros = favs.filter(p => !usados.has(p.id));
+        if (otros.length) grupos.push([grupos.length ? 'Otras piezas' : 'Mis piezas guardadas', otros]);
+        const texto = 'Hola UNICORN, quiero cotizar estas piezas:\n' + grupos.map(([n, l]) => `\n${n}:\n` + l.map(p => `- ${p.titulo}`).join('\n')).join('\n');
+        el.innerHTML = `<div class="section-head"><span class="eyebrow">Para después</span><h2 class="h-section">Tu lista de piezas.</h2></div><div class="lista-g">${grupos.map(([n, l]) => `<div class="glass lg"><h3>${escHTML(n)}</h3>${l.map(p => `<button class="rel-open" data-open="${p.id}"><img src="${p.imagens[0]}" alt=""><span><em>${escHTML(p.titulo)}</em><small>${formatoCOP(p.precio)}</small></span></button>`).join('')}</div>`).join('')}</div><a class="btn btn-primary" target="_blank" rel="noopener" href="https://wa.me/${window.WA_NUM}?text=${encodeURIComponent(texto)}">${icon('chat')} Pedir cotización por WhatsApp</a>`;
+        mount(el);
+      }
+      function paintRepetir() {
+        const u = rd('ultima-compra').map(x => [CATALOGO.find(p => p.titulo === x.t), x.c]).filter(([p]) => p && p.disponible), el = document.getElementById('repetir');
+        el.hidden = !u.length; if (!u.length) return;
+        el.innerHTML = `<div class="section-head"><span class="eyebrow">Tu última compra</span><h2 class="h-section">¿Repetimos el pedido?</h2></div><div class="glass lg">${u.map(([p, c]) => `<button class="rel-open" data-open="${p.id}"><img src="${p.imagens[0]}" alt=""><span><em>${c} × ${escHTML(p.titulo)}</em><small>${formatoCOP(p.precio * c)}</small></span></button>`).join('')}<button class="btn btn-primary" id="repite">Agregar todo al carrito ${icon('plus')}</button></div>`;
+        document.getElementById('repite').onclick = () => u.forEach(([p, c], i) => { for (let k = 0; k < c; k++) setTimeout(() => agregar(p.id, el.querySelector('img')), i * 220 + k * 120); });
+        mount(el);
+      }
+      document.addEventListener('click', e => { const op = e.target.closest('#lista [data-open],#repetir [data-open]'); if (op) abrirProducto(op.dataset.open); });
+      paintLista(); paintRepetir(); addEventListener('eq-change', paintLista);
+      // las fotos de las categorías se mueven un poco con el mouse
+      document.getElementById('acc').addEventListener('pointermove', e => {
+        const c = e.target.closest('.cat-card'); if (!c || !matchMedia('(hover:hover)').matches) return; const r = c.getBoundingClientRect();
+        c.style.setProperty('--px', ((e.clientX - r.left) / r.width - .5) * -18 + 'px'); c.style.setProperty('--py', ((e.clientY - r.top) / r.height - .5) * -18 + 'px');
+      }, { passive: true });
+      paintFinder();
+      if (location.hash === '#finder') setTimeout(() => fin.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
+
+      // kits de mantenimiento: se arman solos con lo que hay disponible (el más económico de cada pieza)
+      const pick = f => CATALOGO.filter(p => PZ.includes(p.cat) && p.disponible && f(p)).sort((a, b) => a.precio - b.precio)[0];
+      const has = (p, c) => (p.compat || []).some(x => x.toLowerCase() === c);
+      const KITS = [
+        ['Mantenimiento de motosierra', 'Lo básico para que corte como el primer día.', [p => p.tipo === 'Aceite' && /2T/i.test(p.titulo), p => p.tipo === 'Bujía' && has(p, 'motores 2t'), p => p.tipo === 'Filtro' && has(p, 'motosierras'), p => p.tipo === 'Lima' && has(p, 'motosierras')]],
+        ['Mantenimiento de guadañadora', 'Mezcla, encendido, aire y hilo.', [p => p.tipo === 'Aceite' && /2T/i.test(p.titulo), p => p.tipo === 'Bujía' && has(p, 'motores 2t'), p => p.tipo === 'Filtro' && has(p, 'guadañadoras'), p => p.tipo === 'Nylon']],
+        ['Protección personal', 'Manos, ojos, oídos y pulmones.', [p => /guante/i.test(p.titulo), p => /gafa/i.test(p.titulo), p => /oido|oído/i.test(p.titulo), p => /respirador/i.test(p.titulo)]],
+        ['Fumigación lista', 'Para empezar a aplicar sin pendientes.', [p => p.tipo === 'Manguera' && has(p, 'fumigadoras'), p => p.tipo === 'Lanza', p => p.tipo === 'Pistola']]
+      ].map(([n, d, fs]) => ({ n, d, items: fs.map(pick).filter(Boolean) })).filter(k => k.items.length >= 3);
+      const ks = document.getElementById('kits'); ks.hidden = !KITS.length;
+      ks.innerHTML = `<div class="section-head"><span class="eyebrow">Kits</span><h2 class="h-section">Kits de mantenimiento.</h2><p class="lead">Combinaciones listas para agregar con un clic. Puedes quitar lo que no necesites desde el carrito.</p></div><div class="kit-grid">${KITS.map((k, i) => `
+        <article class="kit glass reveal" style="--i:${i}"><h3>${k.n}</h3><p>${k.d}</p>
+          <ul>${k.items.map(p => `<li><img src="${p.imagens[0]}" alt="" loading="lazy"><span>${escHTML(p.titulo)}</span><b>${formatoCOP(p.precio)}</b></li>`).join('')}</ul>
+          <div class="kit-foot"><div><small>Total del kit</small><b>${formatoCOP(k.items.reduce((s, p) => s + p.precio, 0))}</b></div><button class="btn btn-primary" data-kit="${i}">Agregar kit ${icon('plus')}</button></div></article>`).join('')}</div>`;
+      mount(ks);
+      ks.addEventListener('click', e => {
+        const b = e.target.closest('[data-kit]'); if (!b) return; const k = KITS[+b.dataset.kit], img = b.closest('.kit').querySelector('li img');
+        b.disabled = true; k.items.forEach((p, i) => setTimeout(() => agregar(p.id, img), i * 220));
+        setTimeout(() => { b.disabled = false; }, k.items.length * 220 + 300);
+      });
+    }
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Soporte | Agro Unicorn</title>
+  <meta name="description" content="Garantía y manuales de tus equipos Agro Unicorn.">
+  <link rel="preconnect" href="https://unicorn.com.co">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="estilo.css?v=13">
+  <script>try{if(localStorage.getItem('modo-oscuro')==='activado')document.documentElement.classList.add('dark-mode')}catch(e){}</script>
+</head>
+<body class="info-pg soporte-pg">
+
+  <!-- 1. Menú píldora -->
+  <header class="site-header glass">
+    <a class="brand" href="UNICORN.html"><img src="https://agro.unicorn.com.co/web/image/16724/20200424%20auls_planobordeazul_v1.png" alt=""><span>AGRO UNICORN</span></a>
+    <nav class="nav" aria-label="Principal">
+      <a href="productos.html">Productos</a>
+      <a href="piezas-accesorios.html">Piezas y accesorios</a>
+    </nav>
+    <div class="header-actions">
+      <button class="search-pill" data-open-search><i data-i="search"></i> Buscar <kbd>/</kbd></button>
+      <button class="icon-btn theme-btn" aria-label="Modo oscuro"></button>
+      <button class="icon-btn cart-btn cart-target" data-open-cart aria-label="Carrito"><i data-i="cart"></i><span class="badge cart-badge">0</span></button>
+    </div>
+  </header>
+
+  <!-- 1. Barra inferior en celular -->
+  <nav class="tabbar glass" aria-label="Principal (celular)">
+    <a href="UNICORN.html"><i data-i="home"></i>Inicio</a>
+    <a href="productos.html"><i data-i="grid"></i>Productos</a>
+    <a href="piezas-accesorios.html"><i data-i="wrench"></i>Piezas</a>
+    <button data-open-search><i data-i="search"></i>Buscar</button>
+    <button class="cart-target" data-open-cart><i data-i="cart"></i>Carrito<span class="badge cart-badge">0</span></button>
+  </nav>
+
+  <main class="wrap info-main">
+    <section class="info-hero">
+      <span class="eyebrow reveal">Soporte</span>
+      <h1 class="reveal" style="--i:1">Te acompañamos <em>después de la compra.</em></h1>
+      <p class="lead reveal" style="--i:2">Garantía, manuales y soporte técnico en nuestras tres sedes y por WhatsApp.</p>
+      <div class="info-jump reveal" style="--i:3"><a class="btn btn-ghost" href="#garantia">Garantía</a><a class="btn btn-ghost" href="#manuales">Manuales</a></div>
+    </section>
+
+    <section id="garantia">
+      <h2 class="info-h2 reveal">Garantía</h2>
+      <p class="reveal">Todos nuestros equipos nuevos tienen la garantía del fabricante, conforme al Estatuto del Consumidor (Ley 1480 de 2011). El tiempo de cobertura depende de la marca y del equipo, y aparece en tu factura.</p>
+      <ol class="pasos">
+        <li class="info-card reveal"><b>Guarda tu factura</b><p>Es el soporte de la fecha de compra. Puedes anotarla en Mi garaje, en la pestaña Ficha.</p></li>
+        <li class="info-card reveal" style="--i:1"><b>Escríbenos o ven a la sede</b><p>Cuéntanos qué le pasa al equipo, con marca, modelo y fotos o video si puedes.</p></li>
+        <li class="info-card reveal" style="--i:2"><b>Revisión técnica</b><p>Nuestro taller o el servicio autorizado de la marca revisa la causa de la falla.</p></li>
+        <li class="info-card reveal" style="--i:3"><b>Reparación o cambio</b><p>Si es un defecto de fábrica, lo reparamos o cambiamos sin costo para ti.</p></li>
+      </ol>
+      <div class="info-duo">
+        <div class="info-card reveal"><b>La garantía cubre</b><ul><li>Defectos de fabricación o de materiales.</li><li>Fallas del motor o de piezas internas con uso normal.</li></ul></div>
+        <div class="info-card reveal" style="--i:1"><b>No cubre</b><ul><li>Desgaste normal: cadenas, cuchillas, nylon, bujías, filtros.</li><li>Mezcla de combustible o aceite incorrecta.</li><li>Golpes, mal uso o reparaciones por terceros no autorizados.</li></ul></div>
+      </div>
+    </section>
+
+    <section id="manuales" class="info-form reveal">
+      <div>
+        <span class="eyebrow">Manuales</span>
+        <h2 class="info-h2">Pide el manual de tu equipo.</h2>
+        <p>Escríbenos la marca y el modelo y te enviamos el manual de usuario o de partes por WhatsApp. Si guardas tu máquina en <a href="garaje.html">Mi garaje</a>, también verás cada cuánto cuidarla y qué repuestos le sirven.</p>
+      </div>
+      <form class="info-wa" data-wa="Hola Agro Unicorn, necesito el manual de mi equipo.">
+        <div class="field"><label for="mm">Marca</label><input id="mm" name="Marca" required placeholder="Ej. Husqvarna, Stihl, Shindaiwa"></div>
+        <div class="field"><label for="mo">Modelo</label><input id="mo" name="Modelo" required placeholder="Ej. 135 Mark II"></div>
+        <div class="field"><label for="mt">Tipo de manual</label><select id="mt" name="Manual"><option>De usuario</option><option>De partes</option><option>Los dos</option></select></div>
+        <button class="btn btn-primary" type="submit"><i data-i="chat"></i> Pedir por WhatsApp</button>
+      </form>
+    </section>
+  </main>
+
+  <footer class="footer"></footer>
+  <button class="fab" aria-label="Hablar con un asesor"><i data-i="chat"></i></button>
+
+  <script src="catalogo.js"></script>
+  <script src="app.js?v=13"></script>
+  <script src="asistente.js"></script>
+  <script src="info.js?v=13"></script>
+</body>
+</html>

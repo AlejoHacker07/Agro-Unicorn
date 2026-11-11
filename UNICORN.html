@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Agro Unicorn | Maquinaria para el campo</title>
+  <meta name="keywords" content="maquinaria agrícola, motosierras, guadañadoras, fumigadoras, motobombas, generadores, repuestos, UNICORN">
+  <meta name="description" content="UNICORN: maquinaria agrícola y herramientas para campo, jardín, construcción y energía en Colombia.">
+  <link rel="preconnect" href="https://unicorn.com.co">
+  <link rel="preload" as="image" href="https://bacanika.com/articulo/images/4.0_BACANIKA/CULTURA/JINETES/Cholo.jpg" fetchpriority="high">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="estilo.css?v=13">
+  <script>try{if(localStorage.getItem('modo-oscuro')==='activado')document.documentElement.classList.add('dark-mode')}catch(e){}</script>
+</head>
+<body class="home">
+
+  <!-- 1. Menú píldora -->
+  <header class="site-header glass">
+    <a class="brand" href="UNICORN.html"><img src="https://agro.unicorn.com.co/web/image/16724/20200424%20auls_planobordeazul_v1.png" alt=""><span>AGRO UNICORN</span></a>
+    <nav class="nav" aria-label="Principal">
+      <a href="productos.html">Productos</a>
+      <a href="piezas-accesorios.html">Piezas y accesorios</a>
+    </nav>
+    <div class="header-actions">
+      <button class="search-pill" data-open-search><i data-i="search"></i> Buscar <kbd>/</kbd></button>
+      <button class="icon-btn theme-btn" aria-label="Modo oscuro"></button>
+      <button class="icon-btn cart-btn cart-target" data-open-cart aria-label="Carrito"><i data-i="cart"></i><span class="badge cart-badge">0</span></button>
+    </div>
+  </header>
+
+  <!-- 1. Barra inferior en celular -->
+  <nav class="tabbar glass" aria-label="Principal (celular)">
+    <a href="UNICORN.html" aria-current="page"><i data-i="home"></i>Inicio</a>
+    <a href="productos.html"><i data-i="grid"></i>Productos</a>
+    <a href="piezas-accesorios.html"><i data-i="wrench"></i>Piezas</a>
+    <button data-open-search><i data-i="search"></i>Buscar</button>
+    <button class="cart-target" data-open-cart><i data-i="cart"></i>Carrito<span class="badge cart-badge">0</span></button>
+  </nav>
+
+  <main>
+    <!-- 2. Portada -->
+    <section class="hp" id="hp">
+      <div class="hp-media" aria-hidden="false">
+        <div class="hp-layer" id="hpLayer"><img id="hpImg" src="https://bacanika.com/articulo/images/4.0_BACANIKA/CULTURA/JINETES/Cholo.jpg" alt="Jinete en el campo colombiano" fetchpriority="high"><div class="hp-lamp" id="hpLamp" aria-hidden="true"></div></div>
+        <div class="hp-sky" aria-hidden="true"></div>
+        <div class="hp-stars" aria-hidden="true"></div>
+        <div class="hp-motes" id="hpMotes" aria-hidden="true"></div>
+      </div>
+      <div class="wrap hp-content" id="hpContent">
+        <span class="eyebrow reveal">Maquinaria desde 1995</span>
+        <h1 class="reveal" style="--i:1">Maquinaria de alta calidad <em>para el campo, tu casa y tu negocio.</em></h1>
+        <p class="lead reveal" style="--i:2">Potencia, eficiencia y durabilidad para la finca, el jardín de tu casa, tu local o tu obra. Motosierras, guadañadoras, motobombas, fumigadoras, generadores y más, con repuestos y respaldo técnico.</p>
+        <div class="hero-ctas reveal" style="--i:3"><a class="btn btn-primary" href="#catalogo">Ver productos <i data-i="arrow"></i></a><a class="btn btn-ghost hp-ghost" href="#resolver">Encuentra tu equipo</a></div>
+      </div>
+    </section>
+
+    <!-- 3. Categorías en mosaico -->
+    <section class="section" id="catalogo" style="padding-top: 40px">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <span class="eyebrow">Catálogo</span>
+          <h2 class="h-section">Explora por categoría.</h2>
+        </div>
+        <div class="bento" id="bento"></div>
+      </div>
+    </section>
+
+    <!-- Encuentra tu equipo (finca, casa, negocio u obra) -->
+    <section class="section" id="resolver" style="padding-top: 0">
+      <div class="wrap">
+        <div class="section-head reveal"><span class="eyebrow">Encuentra tu equipo</span><h2 class="h-section">Dinos dónde y qué, y te mostramos qué te sirve.</h2><p class="lead">Sea una finca, la casa, un negocio o una obra. Mueve el tamaño y mira cómo cambia la recomendación.</p></div>
+        <div class="finder glass reveal" id="finder"></div>
+      </div>
+    </section>
+
+    <!-- 4 y 11. Destacados en carrusel arrastrable -->
+    <section class="section" style="padding-top: 0">
+      <div class="wrap">
+        <div class="section-head reveal" style="display:flex; justify-content:space-between; align-items:flex-end; gap:16px; flex-wrap:wrap">
+          <div><span class="eyebrow">Destacados</span><h2 class="h-section">Lo que más se lleva el campo.</h2></div>
+          <p class="lead" style="max-width:34ch">Arrástralos, tócalos o agrégalos al carrito directamente.</p>
+        </div>
+        <div class="rail" id="rail" aria-label="Productos destacados"></div>
+        <div class="rail-ctrl">
+          <div class="dots" id="dots" aria-hidden="true"></div>
+          <div class="arrows">
+            <button class="icon-btn" id="prev" aria-label="Anterior"><i data-i="left"></i></button>
+            <button class="icon-btn" id="next" aria-label="Siguiente"><i data-i="right"></i></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Marcas -->
+    <section class="section" style="padding-top: 0">
+      <div class="wrap section-head reveal" style="text-align:center">
+        <span class="eyebrow">Marcas aliadas</span>
+        <h2 class="h-section">Las marcas que respaldan tu trabajo.</h2>
+      </div>
+      <div class="marquee reveal"><div class="marquee-track" id="marcas"></div></div>
+      <p class="brand-cap wrap" id="brandCap" aria-live="polite">Pasa el mouse por una marca para ver qué trabajamos con ella.</p>
+    </section>
+
+    <!-- Beneficios -->
+    <section class="section" style="padding-top: 0">
+      <div class="wrap">
+        <div class="section-head reveal"><span class="eyebrow">¿Por qué UNICORN?</span><h2 class="h-section">Especialistas en el agro.</h2></div>
+        <div class="features">
+          <div class="feature glass glow reveal" style="--i:0"><div class="ic"><i data-i="shield"></i></div><h3>Garantía incluida</h3><p>Respaldo directo de cada marca y acceso a nuestra red técnica.</p></div>
+          <div class="feature glass glow reveal" style="--i:1"><div class="ic"><i data-i="truck"></i></div><h3>Envíos rápidos</h3><p>Despachos a toda Colombia, con recogida en tienda gratis.</p></div>
+          <div class="feature glass glow reveal" style="--i:2"><div class="ic"><i data-i="headset"></i></div><h3>Soporte técnico</h3><p>Repuestos originales y asesoría para elegir el equipo correcto.</p></div>
+          <div class="feature glass glow reveal" style="--i:3"><div class="ic"><i data-i="card"></i></div><h3>Pagos seguros</h3><p>Tarjeta, PSE, billeteras virtuales o contra entrega.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Reseñas (de guía, como en la página actual) -->
+    <section class="section" style="padding-top: 0">
+      <div class="wrap">
+        <div class="section-head reveal"><span class="eyebrow">Clientes</span><h2 class="h-section">Lo que opinan de nosotros.</h2></div>
+        <div class="quotes">
+          <figure class="quote glass glow reveal" style="--i:0; margin:0"><span class="stars" aria-label="5 de 5">★★★★★</span><p>“La motobomba que compré funciona perfecto, me entregaron rápido y con garantía. ¡Muy recomendado!”</p><figcaption class="who"><span class="av">JP</span>Juan Pérez</figcaption></figure>
+          <figure class="quote glass glow reveal" style="--i:1; margin:0"><span class="stars" aria-label="5 de 5">★★★★★</span><p>“Excelente atención, me ayudaron a elegir la fumigadora correcta y ahora mi cultivo va mucho mejor.”</p><figcaption class="who"><span class="av">ML</span>María López</figcaption></figure>
+          <figure class="quote glass glow reveal" style="--i:2; margin:0"><span class="stars" aria-label="4 de 5">★★★★☆</span><p>“Muy buenos precios y equipos de calidad. El envío fue un poco demorado, pero todo lo demás excelente.”</p><figcaption class="who"><span class="av">CG</span>Carlos Gómez</figcaption></figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- Ubicación -->
+    <section class="section" style="padding-top: 0">
+      <div class="wrap">
+        <div class="section-head reveal"><span class="eyebrow">Ubícanos</span><h2 class="h-section">Visítanos o escríbenos.</h2></div>
+        <div class="sedes reveal" id="sedes">
+          <div class="sedes-info glass" id="sedesInfo"></div>
+          <div class="map" id="mapBox"><iframe title="Mapa de sucursales UNICORN" src="https://www.google.com/maps/d/embed?mid=12gK3EpCM14jX0ypiJFF1DSGjurkOisg&ehbc=2E312F" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer"></footer>
+
+  <button class="fab" aria-label="Hablar con un asesor"><i data-i="chat"></i></button>
+
+  <script src="catalogo.js"></script>
+  <script src="app.js?v=13"></script>
+  <script src="asistente.js"></script>
+  <script src="inicio.js?v=13"></script>
+  <script>
+    // 3. Mosaico de categorías (Campo y jardín en grande: es la que más productos tiene)
+    const TILES = [
+      ['campo', 'xl', 'https://agro.unicorn.com.co/web/image/23203/1391921_610433935680148_1338398718_n.jpg'],
+      ['agua', 'wide', 'https://agro.unicorn.com.co/web/image/23205/motobomba.jpg'],
+      ['fumigacion', '', 'https://agro.unicorn.com.co/web/image/23207/Fumigadora%20Mitsubishi%20TU26.jpg'],
+      ['energia', '', 'https://agro.unicorn.com.co/web/image/23209/Generador%20Powermaster%204500.jpg'],
+      ['ferreteria', 'wide', 'https://agro.unicorn.com.co/web/image/23213/Herramienta%20Bellota.jpg'],
+      ['repuestos', 'wide', 'https://agro.unicorn.com.co/web/image/23217/AgroUnicorn%20Repuestos.jpg'],
+    ];
+    const n = cat => CATALOGO.filter(p => p.cat === cat).length;
+    document.getElementById('bento').innerHTML = TILES.map(([cat, size, img], i) => `
+      <a class="tile ${size} reveal" style="--i:${i}" data-amb="${cat === 'repuestos' ? 'piezas' : cat}" href="${cat === 'repuestos' ? 'piezas-accesorios.html' : CATEGORIAS[cat].pagina}">
+        <img src="${img}" alt="" loading="lazy">
+        <span class="label">
+          <span><b>${cat === 'repuestos' ? 'Piezas y accesorios' : CATEGORIAS[cat].nombre}</b><small>${cat === 'repuestos' ? n('accesorios') + n('lubricantes') + n('repuestos') : n(cat)} productos</small></span>
+          <span class="go">${icon('arrow')}</span>
+        </span>
+      </a>`).join('');
+
+    // 4 y 11. Destacados al azar (los mismos 5 grupos de la página actual)
+    const pool = CATALOGO.filter(p => ['campo', 'agua', 'energia', 'fumigacion', 'ferreteria'].includes(p.cat));
+    const picks = pool.map(p => [Math.random(), p]).sort((a, b) => a[0] - b[0]).slice(0, 10).map(x => x[1]);
+    document.getElementById('rail').innerHTML = picks.map(cardHTML).join('');
+
+    // Marcas
+    const M = ['https://images.seeklogo.com/logo-png/22/2/husqvarna-logo-png_seeklogo-227182.png','https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/Stihl_Logo.svg/512px-Stihl_Logo.svg.png','https://logos-world.net/wp-content/uploads/2023/03/Shindaiwa-Logo.png','https://bombasbeyond.com/wp-content/uploads/2023/06/logo-barnes.webp','https://images.seeklogo.com/logo-png/30/2/honda-power-equipment-logo-png_seeklogo-303966.png','https://seacoastpower.com/wp-content/uploads/2024/03/Echo.png','https://cdn241.s3.eu-west-2.amazonaws.com/PedrolloDistribution/Images/Why/Our-Partners/Main-Page/Pedrollo-Logo-Page.webp','https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/DeWalt_Logo.svg/512px-DeWalt_Logo.svg.png','https://logos-world.net/wp-content/uploads/2023/01/Tramontina-Logo.png','https://d7rh5s3nxmpy4.cloudfront.net/CMP4506/files/LOGO_BELLOTA_NEGRO.png','https://www.coacosta.com/wp-content/uploads/2017/07/Royal-condor.png','https://www.cercaselcebu.com.co/wp-content/uploads/2025/08/logocercas.png'];
+    document.getElementById('marcas').innerHTML = M.map((s, i) => `<img src="${s}" alt="" data-b="${i}">`).join('');
+
+    document.addEventListener('DOMContentLoaded', () => {
+      mount(document);
+      makeMarquee(document.getElementById('marcas'));
+      makeRail(document.getElementById('rail'), document.getElementById('dots'), document.getElementById('prev'), document.getElementById('next'));
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Mi garaje | Agro Unicorn</title>
+  <meta name="description" content="Tu garaje UNICORN: guarda tus máquinas, mira cómo son por dentro y encuentra sus repuestos.">
+  <link rel="preconnect" href="https://unicorn.com.co">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="estilo.css?v=13">
+  <script>try{if(localStorage.getItem('modo-oscuro')==='activado')document.documentElement.classList.add('dark-mode')}catch(e){}</script>
+</head>
+<body class="garaje-pg">
+
+  <!-- 1. Menú píldora -->
+  <header class="site-header glass">
+    <a class="brand" href="UNICORN.html"><img src="https://agro.unicorn.com.co/web/image/16724/20200424%20auls_planobordeazul_v1.png" alt=""><span>AGRO UNICORN</span></a>
+    <nav class="nav" aria-label="Principal">
+      <a href="productos.html">Productos</a>
+      <a href="piezas-accesorios.html">Piezas y accesorios</a>
+    </nav>
+    <div class="header-actions">
+      <button class="search-pill" data-open-search><i data-i="search"></i> Buscar <kbd>/</kbd></button>
+      <button class="icon-btn theme-btn" aria-label="Modo oscuro"></button>
+      <button class="icon-btn cart-btn cart-target" data-open-cart aria-label="Carrito"><i data-i="cart"></i><span class="badge cart-badge">0</span></button>
+    </div>
+  </header>
+
+  <!-- 1. Barra inferior en celular -->
+  <nav class="tabbar glass" aria-label="Principal (celular)">
+    <a href="UNICORN.html"><i data-i="home"></i>Inicio</a>
+    <a href="productos.html"><i data-i="grid"></i>Productos</a>
+    <a href="piezas-accesorios.html"><i data-i="wrench"></i>Piezas</a>
+    <button data-open-search><i data-i="search"></i>Buscar</button>
+    <button class="cart-target" data-open-cart><i data-i="cart"></i>Carrito<span class="badge cart-badge">0</span></button>
+  </nav>
+
+  <main class="wrap gar-main">
+    <section class="gar-hero">
+      <div class="gar-hero-t">
+        <span class="eyebrow reveal">Mi garaje</span>
+        <h1 class="reveal" style="--i:1">Tus máquinas, <em>siempre a la mano.</em></h1>
+        <p class="lead reveal" style="--i:2">Guarda lo que tienes en casa, en la finca o en el negocio. Aquí ves cómo es por dentro, qué repuestos le sirven y cada cuánto cuidarla.</p>
+        <div class="gar-stats" id="gStats" aria-live="polite"></div>
+      </div>
+      <div class="gdoor" id="gdoor" role="button" tabindex="0" aria-label="Abrir o cerrar la puerta del garaje">
+        <svg class="gin" viewBox="0 0 520 230" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+          <defs><radialGradient id="lamp" cx="50%" cy="0%" r="80%"><stop offset="0" stop-color="#ffd9a0" stop-opacity=".55"/><stop offset="1" stop-color="#ffd9a0" stop-opacity="0"/></radialGradient></defs>
+          <rect width="520" height="230" fill="#1c1a3d"/><rect y="176" width="520" height="54" fill="#12112b"/><path d="M0 176H520" stroke="#2c2a5a" stroke-width="2"/>
+          <rect x="26" y="24" width="190" height="104" rx="8" fill="#26244f"/>
+          <g fill="#3b3878"><circle cx="40" cy="38" r="2"/><circle cx="54" cy="38" r="2"/><circle cx="68" cy="38" r="2"/><circle cx="82" cy="38" r="2"/><circle cx="96" cy="38" r="2"/><circle cx="110" cy="38" r="2"/><circle cx="124" cy="38" r="2"/><circle cx="138" cy="38" r="2"/><circle cx="152" cy="38" r="2"/><circle cx="166" cy="38" r="2"/><circle cx="180" cy="38" r="2"/><circle cx="194" cy="38" r="2"/><circle cx="208" cy="38" r="2"/><circle cx="40" cy="52" r="2"/><circle cx="54" cy="52" r="2"/><circle cx="68" cy="52" r="2"/><circle cx="82" cy="52" r="2"/><circle cx="96" cy="52" r="2"/><circle cx="110" cy="52" r="2"/><circle cx="124" cy="52" r="2"/><circle cx="138" cy="52" r="2"/><circle cx="152" cy="52" r="2"/><circle cx="166" cy="52" r="2"/><circle cx="180" cy="52" r="2"/><circle cx="194" cy="52" r="2"/><circle cx="208" cy="52" r="2"/><circle cx="40" cy="66" r="2"/><circle cx="54" cy="66" r="2"/><circle cx="68" cy="66" r="2"/><circle cx="82" cy="66" r="2"/><circle cx="96" cy="66" r="2"/><circle cx="110" cy="66" r="2"/><circle cx="124" cy="66" r="2"/><circle cx="138" cy="66" r="2"/><circle cx="152" cy="66" r="2"/><circle cx="166" cy="66" r="2"/><circle cx="180" cy="66" r="2"/><circle cx="194" cy="66" r="2"/><circle cx="208" cy="66" r="2"/><circle cx="40" cy="80" r="2"/><circle cx="54" cy="80" r="2"/><circle cx="68" cy="80" r="2"/><circle cx="82" cy="80" r="2"/><circle cx="96" cy="80" r="2"/><circle cx="110" cy="80" r="2"/><circle cx="124" cy="80" r="2"/><circle cx="138" cy="80" r="2"/><circle cx="152" cy="80" r="2"/><circle cx="166" cy="80" r="2"/><circle cx="180" cy="80" r="2"/><circle cx="194" cy="80" r="2"/><circle cx="208" cy="80" r="2"/><circle cx="40" cy="94" r="2"/><circle cx="54" cy="94" r="2"/><circle cx="68" cy="94" r="2"/><circle cx="82" cy="94" r="2"/><circle cx="96" cy="94" r="2"/><circle cx="110" cy="94" r="2"/><circle cx="124" cy="94" r="2"/><circle cx="138" cy="94" r="2"/><circle cx="152" cy="94" r="2"/><circle cx="166" cy="94" r="2"/><circle cx="180" cy="94" r="2"/><circle cx="194" cy="94" r="2"/><circle cx="208" cy="94" r="2"/><circle cx="40" cy="108" r="2"/><circle cx="54" cy="108" r="2"/><circle cx="68" cy="108" r="2"/><circle cx="82" cy="108" r="2"/><circle cx="96" cy="108" r="2"/><circle cx="110" cy="108" r="2"/><circle cx="124" cy="108" r="2"/><circle cx="138" cy="108" r="2"/><circle cx="152" cy="108" r="2"/><circle cx="166" cy="108" r="2"/><circle cx="180" cy="108" r="2"/><circle cx="194" cy="108" r="2"/><circle cx="208" cy="108" r="2"/></g>
+          <g fill="none" stroke="#f57c00" stroke-width="5" stroke-linecap="round"><circle cx="64" cy="58" r="11"/><path d="M75 58h30"/><path d="M130 44l26 44"/><circle cx="130" cy="44" r="6"/></g>
+          <g fill="#8b90c9"><rect x="176" y="40" width="24" height="9" rx="2"/><rect x="170" y="62" width="30" height="9" rx="2"/><rect x="40" y="96" width="60" height="9" rx="2"/></g>
+          <rect x="250" y="44" width="240" height="8" rx="3" fill="#3b3878"/><rect x="262" y="22" width="40" height="22" rx="3" fill="#5a56a8"/><rect x="312" y="28" width="30" height="16" rx="3" fill="#f57c00"/><rect x="352" y="18" width="46" height="26" rx="3" fill="#5a56a8"/>
+          <rect x="250" y="96" width="240" height="8" rx="3" fill="#3b3878"/><rect x="266" y="70" width="52" height="26" rx="3" fill="#8b90c9"/><rect x="330" y="76" width="36" height="20" rx="3" fill="#5a56a8"/>
+          <g><rect x="270" y="132" width="150" height="54" rx="10" fill="#c8312d"/><circle cx="345" cy="159" r="14" fill="#1f2937"/><rect x="296" y="120" width="40" height="16" rx="6" fill="#f59e0b"/><circle cx="440" cy="166" r="22" fill="#2f27c9"/></g>
+          <rect width="520" height="230" fill="url(#lamp)"/></svg>
+        <div class="gdoor-p"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <span class="gdoor-h">Toca para abrir o cerrar</span>
+      </div>
+    </section>
+    <div id="gar" class="gar"></div>
+  </main>
+
+  <footer class="footer"></footer>
+  <button class="fab" aria-label="Hablar con un asesor"><i data-i="chat"></i></button>
+
+  <script src="catalogo.js"></script>
+  <script src="app.js?v=13"></script>
+  <script src="asistente.js"></script>
+  <script src="qr.js"></script>
+  <script src="garaje.js?v=13"></script>
+</body>
+</html>

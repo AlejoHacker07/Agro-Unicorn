@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Productos | Agro UNICORN</title>
+  <link rel="preconnect" href="https://unicorn.com.co">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="estilo.css?v=13">
+  <script>try{if(localStorage.getItem('modo-oscuro')==='activado')document.documentElement.classList.add('dark-mode')}catch(e){}</script>
+</head>
+<body>
+  <header class="site-header glass">
+    <a class="brand" href="UNICORN.html"><img src="https://agro.unicorn.com.co/web/image/16724/20200424%20auls_planobordeazul_v1.png" alt=""><span>AGRO UNICORN</span></a>
+    <nav class="nav" aria-label="Principal">
+      <a href="productos.html" id="navProd">Productos</a>
+      <a href="piezas-accesorios.html" id="navPz">Piezas y accesorios</a>
+    </nav>
+    <div class="header-actions">
+      <button class="search-pill" data-open-search><i data-i="search"></i> Buscar <kbd>/</kbd></button>
+      <button class="icon-btn theme-btn" aria-label="Modo oscuro"></button>
+      <button class="icon-btn cart-btn cart-target" data-open-cart aria-label="Carrito"><i data-i="cart"></i><span class="badge cart-badge">0</span></button>
+    </div>
+  </header>
+  <nav class="tabbar glass" aria-label="Principal (celular)">
+    <a href="UNICORN.html"><i data-i="home"></i>Inicio</a>
+    <a href="productos.html" aria-current="page"><i data-i="grid"></i>Productos</a>
+    <a href="piezas-accesorios.html"><i data-i="wrench"></i>Piezas</a>
+    <button data-open-search><i data-i="search"></i>Buscar</button>
+    <button class="cart-target" data-open-cart><i data-i="cart"></i>Carrito<span class="badge cart-badge">0</span></button>
+  </nav>
+
+  <main class="wrap" data-vistos>
+    <section class="acc-hero">
+      <span class="eyebrow reveal" id="eyebrow">Productos</span>
+      <h1 class="h-section reveal" id="title" style="--i:1">Nuestras categorías.</h1>
+      <p class="lead reveal" id="lead" style="--i:2"></p>
+    </section>
+    <div class="need" id="need" role="group" aria-label="¿Qué quieres hacer?"></div>
+    <div class="acc" id="acc"></div>
+    <section class="reco" id="reco"></section>
+  </main>
+
+  <footer class="footer"></footer>
+  <button class="fab" aria-label="Hablar con un asesor"><i data-i="chat"></i></button>
+  <div class="portal" id="portal" aria-hidden="true"></div>
+
+  <script src="catalogo.js"></script>
+  <script src="app.js?v=13"></script>
+  <script src="asistente.js"></script>
+  <script>
+    const GRUPO = 'productos';
+    const DATA = {
+      productos: {
+        eyebrow: 'Productos', title: 'Nuestras categorías.', lead: 'Elige una categoría para ver todos sus productos. Cada una tiene su propia luz.',
+        items: [
+          ['campo', 'leaf', 'https://agro.unicorn.com.co/web/image/23203/1391921_610433935680148_1338398718_n.jpg', 'Guadañadoras, motosierras, cortasetos y más'],
+          ['agua', 'drop', 'https://agro.unicorn.com.co/web/image/23205/motobomba.jpg', 'Motobombas, electrobombas y presión'],
+          ['fumigacion', 'spray', 'https://agro.unicorn.com.co/web/image/23207/Fumigadora%20Mitsubishi%20TU26.jpg', 'Manuales, de espalda y estacionarias'],
+          ['energia', 'bolt', 'https://agro.unicorn.com.co/web/image/23209/Generador%20Powermaster%204500.jpg', 'Generadores para la finca y la obra'],
+          ['construccion', 'hammer', 'https://agro.unicorn.com.co/web/image/23211/Apisonador%20Forte%20Varios.jpg', 'Muy pronto'],
+          ['ferreteria', 'wrench', 'https://agro.unicorn.com.co/web/image/23213/Herramienta%20Bellota.jpg', 'Herramientas para el trabajo diario']
+        ]
+      },
+      piezas: {
+        eyebrow: 'Piezas y accesorios', title: 'Todo para tu máquina.', lead: 'Protección, lubricantes y repuestos para que tu equipo trabaje como el primer día.',
+        items: [
+          ['accesorios', 'helmet', 'https://agro.unicorn.com.co/web/image/23219/Agrounicorn%20-%20Accesorios.jpg', 'Protección personal y complementos'],
+          ['lubricantes', 'oil', 'https://agro.unicorn.com.co/web/image/23215/agrounicorn%20-%20Grasa-Lubricante-Multiprop%C3%B3sito.jpg', 'Aceites 2T y 4T, cadena y grasas'],
+          ['repuestos', 'gear', 'https://agro.unicorn.com.co/web/image/23217/AgroUnicorn%20Repuestos.jpg', 'Repuestos originales y genéricos']
+        ]
+      }
+    }[GRUPO];
+    document.getElementById(GRUPO === 'piezas' ? 'navPz' : 'navProd').setAttribute('aria-current', 'page');
+    document.getElementById('eyebrow').textContent = DATA.eyebrow;
+    document.getElementById('title').textContent = DATA.title;
+    document.getElementById('lead').textContent = DATA.lead;
+    const total = c => CATALOGO.filter(p => p.cat === c).length;
+    document.getElementById('acc').innerHTML = DATA.items.map(([cat, ic, img, sub], i) => `
+      <a class="cat-card reveal" style="--i:${i}; --amb:${AMB[cat]}" data-amb="${cat}" href="${CATEGORIAS[cat].pagina}">
+        <img src="${img}" alt="" loading="lazy">
+        <span class="vname" aria-hidden="true">${CATEGORIAS[cat].nombre}</span>
+        <span class="cat-top"><span class="cat-ic">${icon(ic)}</span><span class="cat-count">${total(cat) ? total(cat) + ' productos' : 'Muy pronto'}</span></span>
+        <span class="cat-bottom"><span><h2>${CATEGORIAS[cat].nombre}</h2><p>${sub}</p></span><span class="cat-go">${icon('arrow')}</span></span>
+      </a>`).join('');
+
+    // al entrar a una categoría, la pantalla se tiñe de su color
+    document.getElementById('acc').addEventListener('click', e => {
+      const a = e.target.closest('.cat-card'); if (!a || e.metaKey || e.ctrlKey) return;
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      e.preventDefault();
+      const portal = document.getElementById('portal');
+      portal.style.setProperty('--amb', AMB[a.dataset.amb]);
+      portal.style.setProperty('--px', e.clientX + 'px'); portal.style.setProperty('--py', e.clientY + 'px');
+      portal.classList.add('go');
+      setTimeout(() => location.href = a.href, 450);
+    });
+    addEventListener('pageshow', () => document.getElementById('portal').classList.remove('go'));
+    document.addEventListener('DOMContentLoaded', () => { mount(document); makeAccordion(document.getElementById('acc')); });
+    // ---------- Solo en Productos: selector de necesidad y recomendador ----------
+    if (GRUPO === 'productos') {
+      const NEEDS = [
+        ['Tengo un lote enmontado', 'campo', 'leaf', [['Guadañadoras', 'campo-jardin.html', 'Guadañadora'], ['Picadores trituradores', 'campo-jardin.html', 'Picador triturador']]],
+        ['Voy a preparar la tierra para sembrar', 'campo', 'wrench', [['Motoazadas', 'campo-jardin.html', 'Motoazada'], ['Ahoyadores', 'campo-jardin.html', 'Ahoyador']]],
+        ['Hay un árbol que tumbar', 'campo', 'wrench', [['Motosierras', 'campo-jardin.html', 'Motosierra'], ['Arneses y protección', 'accesorios.html', 'Arnés']]],
+        ['El agua no llega al tanque', 'agua', 'drop', [['Motobombas', 'manejo-agua.html', 'Motobomba'], ['Electrobombas', 'manejo-agua.html', 'Electrobomba']]],
+        ['Algo está atacando mi cultivo', 'fumigacion', 'spray', [['Fumigadoras de espalda', 'fumigacion.html', 'Fumigadora de espalda'], ['Fumigadoras estacionarias', 'fumigacion.html', 'Fumigadora estacionaria']]],
+        ['Se va la luz en la finca', 'energia', 'bolt', [['Generadores', 'manejo-energia.html', 'Generador']]],
+        ['Quiero cercar el potrero', 'campo', 'hammer', [['Cercas eléctricas', 'campo-jardin.html', 'Cerca eléctrica'], ['Alicates y pinzas', 'ferreteria.html', 'Alicate / Pinza']]],
+        ['Hay que lavar la maquinaria', 'agua', 'drop', [['Hidrolavadoras', 'manejo-agua.html', 'Hidrolavadora']]]
+      ];
+      const need = document.getElementById('need');
+      need.innerHTML = '<b>Cuéntanos tu situación</b><div class="need-chips">' + NEEDS.map(([l, c, ic], i) => `<button class="opt" data-need="${c}" data-n="${i}" aria-pressed="false">${icon(ic)} ${l}</button>`).join('') + '</div><div class="need-go" id="needGo" hidden></div>';
+      mount(need);
+      let cur = -1;
+      need.addEventListener('click', e => {
+        const b = e.target.closest('[data-need]'); if (!b) return;
+        const n = +b.dataset.n, go = document.getElementById('needGo'); cur = cur === n ? -1 : n;
+        need.querySelectorAll('[data-need]').forEach(x => x.setAttribute('aria-pressed', cur === +x.dataset.n));
+        const amb = cur < 0 ? '' : NEEDS[cur][1];
+        go.hidden = cur < 0;
+        if (cur >= 0) go.innerHTML = '<span>Te sirve mirar:</span>' + NEEDS[cur][3].map(([l, pg, t]) => `<a class="btn btn-ghost" href="${pg}?tipo=${encodeURIComponent(t)}">${l} ${icon('arrow')}</a>`).join('');
+        document.querySelectorAll('#acc .cat-card').forEach(c => { c.classList.toggle('dim', !!amb && c.dataset.amb !== amb); c.classList.toggle('lit', !!amb && c.dataset.amb === amb); });
+      });
+      // recomendador orientativo: tipo de trabajo + tamaño del terreno
+      const JOBS = { maleza: ['Cortar maleza', t => t === 'Guadañadora'], talar: ['Talar y podar', t => t === 'Motosierra'], regar: ['Regar', t => /bomba/i.test(t)], fumigar: ['Fumigar', t => /^Fumigadora/.test(t)], energia: ['Generar energía', t => t === 'Generador'], suelo: ['Trabajar el suelo', t => t === 'Motoazada' || t === 'Ahoyador'] };
+      const reco = document.getElementById('reco');
+      reco.innerHTML = `<div class="section-head"><span class="eyebrow">Te ayudamos</span><h2 class="h-section">Cuéntanos tu terreno.</h2><p class="lead">Dos datos y te sugerimos tres equipos para empezar. Es una guía orientativa; un asesor confirma la mejor opción.</p></div>
+        <div class="reco-box glass"><div class="reco-q"><label>¿Qué vas a hacer?<select class="select" id="rJob">${Object.entries(JOBS).map(([k, [l]]) => `<option value="${k}">${l}</option>`).join('')}</select></label>
+        <label>¿Qué tan grande es tu terreno?<select class="select" id="rSize"><option value="0">Pequeño (menos de 1 hectárea)</option><option value="0.5">Mediano (de 1 a 5 hectáreas)</option><option value="1">Grande (más de 5 hectáreas)</option></select></label></div><div class="reco-out" id="rOut"></div></div>`;
+      const sugerir = () => {
+        const job = JOBS[document.getElementById('rJob').value], pos = +document.getElementById('rSize').value;
+        const v = q => potenciaDe(q) || q.precio, pool = CATALOGO.filter(q => !window.EQ.PZ.includes(q.cat) && q.disponible && job[1](q.tipo)).sort((a, b) => v(a) - v(b));
+        const out = document.getElementById('rOut');
+        if (!pool.length) { out.innerHTML = '<p class="nota">Por ahora no tenemos equipos disponibles para esto.</p>'; return; }
+        const c = Math.round(pos * (pool.length - 1)), ix = [c - 1, c, c + 1].filter(i => i >= 0 && i < pool.length), pick = ix.length < 3 ? pool.slice(Math.max(0, Math.min(c - 1, pool.length - 3)), Math.max(0, Math.min(c - 1, pool.length - 3)) + 3) : ix.map(i => pool[i]);
+        out.innerHTML = pick.map((q, i) => `<button class="reco-c" data-open="${q.id}" style="--i:${i}"><img src="${q.imagens[0]}" alt=""><b>${escHTML(q.titulo)}</b><span>${formatoCOP(q.precio)}</span><small>${potenciaDe(q) ? +potenciaDe(q).toFixed(2) + ' kW · ' : ''}${escHTML(q.motor || '')}</small></button>`).join('');
+      };
+      document.getElementById('rJob').onchange = sugerir; document.getElementById('rSize').onchange = sugerir; sugerir();
+      reco.addEventListener('click', e => { const o = e.target.closest('[data-open]'); if (o) abrirProducto(o.dataset.open); });
+    }
+
+  </script>
+</body>
+</html>
